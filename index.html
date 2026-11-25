@@ -1,0 +1,318 @@
+<!doctype html>
+<html lang="it" data-lang="it">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>brOS · Il browser che tratta le tue pagine come file</title>
+<meta name="description" content="brOS è un browser per Mac che mostra le tab aperte come file in una finestra del Finder. Fork di Search, con un Workspace per ordinare le pagine.">
+<meta name="color-scheme" content="dark">
+<meta name="theme-color" content="#000000">
+<link rel="icon" type="image/svg+xml" href="favicon.svg">
+<script>
+  // Lingua: scelta salvata, altrimenti quella del browser. Gira prima del rendering per evitare lampi.
+  (function () {
+    var d = document.documentElement, l = "";
+    try { l = localStorage.getItem("bros-lang") || ""; } catch (e) {}
+    if (l !== "it" && l !== "en") l = /^it/i.test(navigator.language || "") ? "it" : "en";
+    d.dataset.lang = l; d.lang = l; d.classList.add("js");
+  })();
+</script>
+<link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+<header class="nav">
+  <div class="wrap nav-in">
+    <a class="back" href="/#/ideas" target="_top" hidden>
+      <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m15 18-6-6 6-6"/></svg>
+      <span lang="it">Portfolio</span><span lang="en">Portfolio</span>
+    </a>
+    <a class="logo" href="#top" aria-label="brOS">br<b>OS</b></a>
+    <nav class="nav-links" aria-label="Sezioni">
+      <a href="#features"><span lang="it">Funzioni</span><span lang="en">Features</span></a>
+      <a href="#keys"><span lang="it">Scorciatoie</span><span lang="en">Shortcuts</span></a>
+      <a href="#install"><span lang="it">Installa</span><span lang="en">Install</span></a>
+      <a href="https://github.com/MEPoss/bros" target="_blank" rel="noopener">GitHub</a>
+    </nav>
+    <div class="lang" role="group" aria-label="Lingua / Language">
+      <button type="button" data-set-lang="it">IT</button>
+      <button type="button" data-set-lang="en">EN</button>
+    </div>
+  </div>
+</header>
+
+<main id="top">
+
+  <!-- HERO -->
+  <section class="hero">
+    <canvas id="shader" aria-hidden="true"></canvas>
+    <div class="hero-fade" aria-hidden="true"></div>
+    <div class="wrap hero-in">
+      <a class="pill" href="https://searchbrowser.app" target="_blank" rel="noopener">
+        <span lang="it">Un fork di Search</span><span lang="en">A fork of Search</span>
+        <i aria-hidden="true">↗</i>
+      </a>
+      <h1>
+        <span lang="it">Le tue pagine aperte,<br>ordinate come file.</span>
+        <span lang="en">Your open pages,<br>sorted like files.</span>
+      </h1>
+      <p class="lead">
+        <span lang="it">brOS è un browser per Mac che mostra le tab aperte come file in una finestra del Finder. Le sposti in cartelle, le segni, le ritrovi.</span>
+        <span lang="en">brOS is a Mac browser that shows your open tabs like files in a Finder window. Move them into folders, mark them, find them again.</span>
+      </p>
+      <div class="cta-row">
+        <a class="btn primary" href="https://github.com/MEPoss/bros/releases/latest" target="_blank" rel="noopener">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 3v12"/><path d="m7 11 5 5 5-5"/><path d="M5 20h14"/></svg>
+          <span lang="it">Scarica per Mac</span><span lang="en">Download for Mac</span>
+        </a>
+        <a class="btn ghost" href="https://github.com/MEPoss/bros" target="_blank" rel="noopener">
+          <span lang="it">Vedi su GitHub</span><span lang="en">View on GitHub</span>
+        </a>
+      </div>
+      <p class="meta">
+        <span lang="it">Gratuito · macOS 14 o successivo · Apple silicon · circa 14 MB</span>
+        <span lang="en">Free · macOS 14 or later · Apple silicon · about 14 MB</span>
+      </p>
+    </div>
+
+    <div class="wrap hero-shot reveal">
+      <figure class="shot win">
+        <div class="win-bar"><i></i><i></i><i></i></div>
+        <div class="win-body">
+          <div class="mock mock-ws" aria-hidden="true">
+            <div class="ws-tree">
+              <div class="t sel"><b></b>Inbox<em>4</em></div>
+              <div class="t"><b></b>To do<em>2</em></div>
+              <div class="t"><b></b>Due this week<em>3</em></div>
+              <div class="t"><b class="f"></b>Progetti</div>
+              <div class="t sub"><b class="f"></b>Sito</div>
+              <div class="t"><b class="f"></b>Da leggere</div>
+            </div>
+            <div class="ws-grid">
+              <div class="tile new"></div><div class="tile"></div><div class="tile"></div>
+              <div class="tile"></div><div class="tile"></div><div class="tile"></div>
+            </div>
+          </div>
+          <img data-shot src="assets/workspace.png" alt="Il Workspace di brOS aperto con ⌘K: sezioni a sinistra, link a destra" decoding="async">
+          <span class="ph">placeholder · assets/workspace.png</span>
+        </div>
+      </figure>
+    </div>
+  </section>
+
+  <!-- FUNZIONI -->
+  <section id="features" class="section">
+    <div class="wrap">
+      <p class="eyebrow"><span lang="it">Il Workspace</span><span lang="en">The Workspace</span></p>
+      <h2>
+        <span lang="it">Un browser che tiene in ordine quello che apri.</span>
+        <span lang="en">A browser that keeps what you open in order.</span>
+      </h2>
+    </div>
+
+    <!-- 01 -->
+    <div class="wrap feature reveal">
+      <div class="f-text">
+        <span class="num">01</span>
+        <h3><span lang="it">Una vista delle tab, non dei segnalibri</span><span lang="en">A view of your tabs, not your bookmarks</span></h3>
+        <p>
+          <span lang="it">Premi <kbd>⌘</kbd><kbd>K</kbd> e vedi le pagine che hai aperto. Una pagina nuova finisce da sola nella Inbox, senza che tu debba salvarla. Le sezioni sono Inbox, To do, Due this week e le tue cartelle, annidate quanto vuoi.</span>
+          <span lang="en">Press <kbd>⌘</kbd><kbd>K</kbd> and see the pages you have open. A new page lands in the Inbox by itself, with nothing to save. The sections are Inbox, To do, Due this week and your own folders, nested as deep as you like.</span>
+        </p>
+      </div>
+      <figure class="shot win f-shot">
+        <div class="win-bar"><i></i><i></i><i></i></div>
+        <div class="win-body">
+          <div class="mock mock-ws mock-inbox" aria-hidden="true">
+            <div class="ws-tree">
+              <div class="t sel"><b></b>Inbox<em>4</em></div>
+              <div class="t"><b></b>To do<em>2</em></div>
+              <div class="t"><b></b>Due this week<em>3</em></div>
+              <div class="t"><b class="f"></b>Progetti</div>
+              <div class="t sub"><b class="f"></b>Sito</div>
+            </div>
+            <div class="ws-grid one">
+              <div class="tile new"></div><div class="tile"></div><div class="tile"></div>
+            </div>
+          </div>
+          <img data-shot data-px="0" data-py="0" src="assets/workspace.png" alt="Sezioni del Workspace: Inbox, To do, Due this week e cartelle" loading="lazy" decoding="async">
+          <span class="ph">placeholder · assets/workspace.png</span>
+        </div>
+      </figure>
+    </div>
+
+    <!-- 02 -->
+    <div class="wrap feature flip reveal">
+      <div class="f-text">
+        <span class="num">02</span>
+        <h3><span lang="it">Ogni link è un file</span><span lang="en">Every link is a file</span></h3>
+        <p>
+          <span lang="it">Ogni link ha stato, priorità, scadenza, tag e note. Trascini i link sulle cartelle. Selezioni più link come nel Finder (clic, <kbd>⌘</kbd>, <kbd>⇧</kbd> o un rettangolo) e con “Crea cartella da selezione” li raccogli in un colpo.</span>
+          <span lang="en">Every link has a status, a priority, a due date, tags and notes. Drag links onto folders. Select several as in the Finder (click, <kbd>⌘</kbd>, <kbd>⇧</kbd> or a rubber band) and use “Create Folder from Selection” to gather them at once.</span>
+        </p>
+      </div>
+      <figure class="shot win f-shot">
+        <div class="win-bar"><i></i><i></i><i></i></div>
+        <div class="win-body">
+          <div class="mock mock-rows" aria-hidden="true">
+            <div class="r"><b></b><s></s><u class="c1"></u><u class="c2"></u><u class="c3"></u></div>
+            <div class="r pick"><b></b><s></s><u class="c1"></u><u class="c2"></u><u class="c3"></u></div>
+            <div class="r pick"><b></b><s></s><u class="c1"></u><u class="c2"></u><u class="c3"></u></div>
+            <div class="r pick"><b></b><s></s><u class="c1"></u><u class="c2"></u><u class="c3"></u></div>
+            <div class="r"><b></b><s></s><u class="c1"></u><u class="c2"></u><u class="c3"></u></div>
+            <div class="folder-pop"></div>
+          </div>
+          <img data-shot src="assets/details.png" alt="Un link con stato, priorità, scadenza, tag e note" loading="lazy" decoding="async">
+          <span class="ph">placeholder · assets/details.png</span>
+        </div>
+      </figure>
+    </div>
+
+    <!-- 03 -->
+    <div class="wrap feature wide reveal">
+      <div class="f-text">
+        <span class="num">03</span>
+        <h3><span lang="it">Tre modi di guardarli</span><span lang="en">Three ways to look at them</span></h3>
+        <p>
+          <span lang="it">Icone, lista, snapshot. Nello snapshot ogni tessera è la foto della pagina come l’hai vista l’ultima volta, così riconosci subito quella che cerchi.</span>
+          <span lang="en">Icons, list, snapshots. In snapshots, each tile is a picture of the page as you last saw it, so you spot the one you want at a glance.</span>
+        </p>
+      </div>
+      <div class="views">
+        <figure class="shot win small">
+          <div class="win-body">
+            <div class="mock mock-icons" aria-hidden="true"><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i></div>
+            <img data-shot src="assets/view-icons.png" alt="Vista icone" loading="lazy" decoding="async">
+            <span class="ph">placeholder · assets/view-icons.png</span>
+          </div>
+          <figcaption><span lang="it">Icone</span><span lang="en">Icons</span></figcaption>
+        </figure>
+        <figure class="shot win small">
+          <div class="win-body">
+            <div class="mock mock-list" aria-hidden="true"><i></i><i></i><i></i><i></i><i></i><i></i><i></i></div>
+            <img data-shot src="assets/view-list.png" alt="Vista lista" loading="lazy" decoding="async">
+            <span class="ph">placeholder · assets/view-list.png</span>
+          </div>
+          <figcaption><span lang="it">Lista</span><span lang="en">List</span></figcaption>
+        </figure>
+        <figure class="shot win small">
+          <div class="win-body">
+            <div class="mock mock-snaps" aria-hidden="true"><i></i><i></i><i></i><i></i></div>
+            <img data-shot src="assets/view-snapshot.png" alt="Vista snapshot" loading="lazy" decoding="async">
+            <span class="ph">placeholder · assets/view-snapshot.png</span>
+          </div>
+          <figcaption>Snapshot</figcaption>
+        </figure>
+      </div>
+    </div>
+
+    <!-- 04 -->
+    <div class="wrap feature flip reveal">
+      <div class="f-text">
+        <span class="num">04</span>
+        <h3><span lang="it">Tieni quando chiudi</span><span lang="en">Keep when closed</span></h3>
+        <p>
+          <span lang="it">Di solito chiudere una tab fa sparire la pagina. Con <kbd>⌥</kbd><kbd>⌘</kbd><kbd>S</kbd> il link resta nel Workspace anche dopo. Quello che non hai tenuto né messo in una cartella se ne va con la tab.</span>
+          <span lang="en">Normally, closing a tab makes the page vanish. With <kbd>⌥</kbd><kbd>⌘</kbd><kbd>S</kbd> the link stays in the Workspace afterwards. Anything you neither kept nor filed goes away with its tab.</span>
+        </p>
+      </div>
+      <figure class="shot win f-shot">
+        <div class="win-bar"><i></i><i></i><i></i></div>
+        <div class="win-body">
+          <div class="mock mock-keep" aria-hidden="true">
+            <div class="tabs"><span class="tab keep">A<x>×</x></span><span class="tab gone">B<x>×</x></span></div>
+            <div class="ws-list">
+              <div class="lr keep"><b></b><s></s><em>⌥⌘S</em></div>
+              <div class="lr gone"><b></b><s></s></div>
+            </div>
+          </div>
+          <img data-shot src="assets/keep.png" alt="Un link tenuto nel Workspace dopo la chiusura della tab" loading="lazy" decoding="async">
+          <span class="ph">placeholder · assets/keep.png</span>
+        </div>
+      </figure>
+    </div>
+  </section>
+
+  <!-- SCORCIATOIE -->
+  <section id="keys" class="section">
+    <div class="wrap">
+      <p class="eyebrow"><span lang="it">Tastiera</span><span lang="en">Keyboard</span></p>
+      <h2>
+        <span lang="it">Si usa senza toccare il mouse.</span>
+        <span lang="en">Works without touching the mouse.</span>
+      </h2>
+      <p class="sub">
+        <span lang="it">Le frecce semplici appartengono al Workspace finché non clicchi su una pagina, che restituisce la tastiera a lei.</span>
+        <span lang="en">The plain arrow keys belong to the Workspace until you click on a page, which gives the keyboard back to it.</span>
+      </p>
+
+      <div class="keys reveal">
+        <div class="k"><span class="kk"><kbd>⌘</kbd><kbd>K</kbd></span><p><span lang="it">Apre il Workspace</span><span lang="en">Show the Workspace</span></p></div>
+        <div class="k"><span class="kk"><kbd>⇧</kbd><kbd>⌘</kbd><kbd>O</kbd></span><p><span lang="it">Workspace nella barra laterale, al posto delle tab</span><span lang="en">Workspace in the sidebar, in place of the tab column</span></p></div>
+        <div class="k"><span class="kk"><kbd>⌥</kbd><kbd>⌘</kbd><kbd>S</kbd></span><p><span lang="it">Tieni la pagina in primo piano nel Workspace</span><span lang="en">Keep the page in front in the Workspace</span></p></div>
+        <div class="k"><span class="kk"><kbd>⌥</kbd><kbd>⌘</kbd><kbd>↑</kbd><kbd>↓</kbd></span><p><span lang="it">Pagina precedente o successiva. La lista gira in cerchio e funziona anche con il cursore nel campo di Google</span><span lang="en">Previous or next page. The list goes round, and it works with the caret in Google’s search field</span></p></div>
+        <div class="k"><span class="kk"><kbd>⌥</kbd><kbd>⌘</kbd><kbd>←</kbd><kbd>→</kbd></span><p><span lang="it">Sezione precedente o successiva</span><span lang="en">Previous or next section</span></p></div>
+        <div class="k"><span class="kk"><kbd>↑</kbd><kbd>↓</kbd><kbd>←</kbd><kbd>→</kbd></span><p><span lang="it">Dentro il Workspace: ti muovi tra sezioni e link, apri e chiudi le cartelle. Invio apre la pagina</span><span lang="en">Inside the Workspace: move through sections and links, open and close folders. Return opens the page</span></p></div>
+        <div class="k"><span class="kk"><kbd>⌫</kbd></span><p><span lang="it">Elimina i link selezionati, con conferma</span><span lang="en">Delete the selected links, with a confirmation</span></p></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- EREDITA DA SEARCH -->
+  <section class="section">
+    <div class="wrap">
+      <p class="eyebrow"><span lang="it">Le basi</span><span lang="en">The foundation</span></p>
+      <h2>
+        <span lang="it">Sotto c’è Search: piccolo, veloce, silenzioso.</span>
+        <span lang="en">Underneath is Search: small, fast, quiet.</span>
+      </h2>
+      <div class="cells reveal">
+        <div class="cell"><strong>~14 MB</strong><p><span lang="it">Usa WebKit, il motore che è già dentro macOS. Nessuna copia di Chromium.</span><span lang="en">Runs on WebKit, the engine already inside macOS. No second copy of Chromium.</span></p></div>
+        <div class="cell"><strong><span lang="it">Nessuna toolbar</span><span lang="en">No toolbar</span></strong><p><span lang="it">Un solo campo per indirizzi e ricerche, e la pagina.</span><span lang="en">One field for addresses and searches, and the page.</span></p></div>
+        <div class="cell"><strong><span lang="it">Ad blocker</span><span lang="en">Ad blocker</span></strong><p><span lang="it">Integrato, ferma i tracker prima che la pagina si disegni.</span><span lang="en">Built in, it stops trackers before the page draws.</span></p></div>
+        <div class="cell"><strong><span lang="it">Niente account</span><span lang="en">No account</span></strong><p><span lang="it">Nessuna telemetria. La sincronizzazione iCloud è opzionale e usa il tuo iCloud, non un server nostro.</span><span lang="en">No telemetry. iCloud sync is optional and uses your own iCloud, not a server of ours.</span></p></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- INSTALLA -->
+  <section id="install" class="section">
+    <div class="wrap">
+      <p class="eyebrow"><span lang="it">Installazione</span><span lang="en">Install</span></p>
+      <h2><span lang="it">Tre passaggi.</span><span lang="en">Three steps.</span></h2>
+      <ol class="steps reveal">
+        <li><span class="n">1</span><p><span lang="it">Scarica <code>Bros.dmg</code> e trascina l’app in Applicazioni.</span><span lang="en">Download <code>Bros.dmg</code> and drag the app into Applications.</span></p></li>
+        <li><span class="n">2</span><p><span lang="it">La prima volta, clic con il tasto destro su Bros e scegli <strong>Apri</strong>.</span><span lang="en">The first time, right-click Bros and choose <strong>Open</strong>.</span></p></li>
+        <li><span class="n">3</span><p><span lang="it">Da quel momento si apre come ogni altra app.</span><span lang="en">From then on it opens like any other app.</span></p></li>
+      </ol>
+      <p class="note">
+        <span lang="it">brOS non è ancora notarizzato da Apple: per questo macOS chiede conferma la prima volta. Non si aggiorna da solo: le nuove versioni si scaricano dalle <a href="https://github.com/MEPoss/bros/releases" target="_blank" rel="noopener">Releases</a>.</span>
+        <span lang="en">brOS is not yet notarised by Apple, which is why macOS asks you to confirm the first time. It does not update itself: new versions are on the <a href="https://github.com/MEPoss/bros/releases" target="_blank" rel="noopener">Releases</a> page.</span>
+      </p>
+      <div class="cta-row">
+        <a class="btn primary" href="https://github.com/MEPoss/bros/releases/latest" target="_blank" rel="noopener">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 3v12"/><path d="m7 11 5 5 5-5"/><path d="M5 20h14"/></svg>
+          <span lang="it">Scarica per Mac</span><span lang="en">Download for Mac</span>
+        </a>
+      </div>
+    </div>
+  </section>
+</main>
+
+<footer class="foot">
+  <div class="wrap foot-in">
+    <p>
+      <span lang="it">brOS è un fork di <a href="https://searchbrowser.app" target="_blank" rel="noopener">Search</a> di Office Commun, con licenza MIT. Il Workspace è un’aggiunta indipendente e non è affiliato né approvato da Office Commun.</span>
+      <span lang="en">brOS is a fork of <a href="https://searchbrowser.app" target="_blank" rel="noopener">Search</a> by Office Commun, MIT licensed. The Workspace is an independent addition and is not affiliated with or endorsed by Office Commun.</span>
+    </p>
+    <p class="links">
+      <a href="https://github.com/MEPoss/bros" target="_blank" rel="noopener">GitHub</a>
+      <a href="https://github.com/MEPoss/bros/blob/main/LICENSE" target="_blank" rel="noopener"><span lang="it">Licenza</span><span lang="en">Licence</span></a>
+      <a href="https://github.com/driceroland/Search" target="_blank" rel="noopener"><span lang="it">Codice di Search</span><span lang="en">Search source</span></a>
+    </p>
+  </div>
+</footer>
+
+<script src="main.js"></script>
+</body>
+</html>
