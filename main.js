@@ -38,9 +38,9 @@
       }
     }
   } catch (e) {}
-  document.querySelectorAll("[data-set-lang]").forEach(function (b) {
-    b.addEventListener("click", function () { setLang(b.dataset.setLang, true); });
-  });
+  // Un clic ovunque sul box passa all'altra lingua
+  var box = document.querySelector(".lang");
+  if (box) box.addEventListener("click", function () { setLang(doc.dataset.lang === "it" ? "en" : "it", true); });
   setLang(doc.dataset.lang, false);
 
   /* ---------- Apparizione allo scroll ---------- */

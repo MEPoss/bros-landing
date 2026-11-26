@@ -52,7 +52,7 @@ html[data-lang="it"] [lang="en"], html[data-lang="en"] [lang="it"] { display: no
 .nav-links { display: flex; gap: 22px; margin-left: auto; }
 .nav-links a { color: var(--muted); text-decoration: none; font-size: 14px; transition: color .15s; }
 .nav-links a:hover { color: var(--text); }
-.lang { display: flex; border: 1px solid var(--line-2); border-radius: 8px; overflow: hidden; }
+.lang { cursor: pointer; display: flex; border: 1px solid var(--line-2); border-radius: 8px; overflow: hidden; }
 .lang button {
   font: 500 12px var(--font); letter-spacing: .04em; padding: 5px 10px;
   background: none; color: var(--muted); border: 0; cursor: pointer;
