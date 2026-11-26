@@ -302,3 +302,15 @@
       .catch(fallback);
   })();
 })();
+
+/* Scritta del footer: la corpo si adatta alla larghezza disponibile */
+(function () {
+  var g = document.querySelector(".giant"), w = g && g.querySelector(".gw"); if (!w) return;
+  function fit() {
+    g.style.fontSize = "100px";
+    var avail = g.clientWidth - 40, cur = w.getBoundingClientRect().width;
+    if (cur > 0) g.style.fontSize = (100 * avail / cur) + "px";
+  }
+  fit(); addEventListener("resize", fit);
+  if (document.fonts && document.fonts.ready) document.fonts.ready.then(fit);
+})();
