@@ -1,4 +1,4 @@
-/* brOS landing: lingua, shader dell'hero, effetto pixel sugli screenshot, apparizione allo scroll */
+/* brOS landing: lingua, shader dell'hero, effetto pixel sugli screenshot, apparizione allo scroll. Pubblicata da Vercel a ogni push su main. */
 (function () {
   "use strict";
   var doc = document.documentElement;
