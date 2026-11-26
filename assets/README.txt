@@ -10,3 +10,6 @@ view-snapshot.png  Vista snapshot                            [reale] (blocco 3)
 
 Gli scatti vengono da una copia di prova di brOS con dati dimostrativi (pagine pubbliche),
 non dal browser di uso quotidiano.
+tabs-strip.png     Tab in alto con quattro tab fissate        [reale] (Le basi)
+tabs-side.png      Tab in colonna a sinistra                  [reale] (Le basi)
+tabs-pins.png      Tab fissate come lettere                   [reale] (Le basi)

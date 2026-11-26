@@ -185,56 +185,37 @@
     // se il file manca resta il segnaposto
   });
 
-  /* ---------- Hero: la finestra sale e si raddrizza con lo scroll (come il tour di Pantry) ---------- */
-  (function heroMotion() {
-    var hero = document.getElementById("hero"), stage = hero && hero.querySelector(".hero-stage");
-    if (!hero || !stage || reduce) return;
-    doc.classList.add("has-motion");
-    var NAV = 56, queued = false;
-    function update() {
-      queued = false;
-      var range = hero.offsetHeight - stage.offsetHeight;
-      var p = range > 0 ? Math.min(1, Math.max(0, (NAV - hero.getBoundingClientRect().top) / range)) : 1;
-      hero.style.setProperty("--e", (p * p * (3 - 2 * p)).toFixed(4));
-    }
-    function queue() { if (!queued) { queued = true; requestAnimationFrame(update); } }
-    addEventListener("scroll", queue, { passive: true });
-    addEventListener("resize", queue);
-    update();
-  })();
-
-  /* ---------- Icone pixel: bitmap 12x12, disegnate come quadratini ---------- */
-  var ICONS = {
-    pin:    ["............","............",".##########.",".#........#.",".#.###....#.",".#.###....#.",".#........#.",".#........#.",".##########.","............","............","............"],
-    shield: ["............","..########..","..#......#..","..#......#..","..#......#..","..#......#..","..#......#..","...#....#...","....#..#....",".....##.....","............","............"],
-    hide:   ["............","............","...######...",".##......##.","#...####...#","#..##..##..#","#...####...#",".##......##.","...######...","............","............","............"],
-    book:   ["............","............",".####..####.",".#..#..#..#.",".#..#..#..#.",".#..#..#..#.",".#..#..#..#.",".####..####.","............","............","............","............"],
-    video:  ["............","............",".##########.",".#........#.",".#........#.",".#...####.#.",".#...#..#.#.",".#...####.#.",".##########.","............","............","............"],
-    key:    ["............","............","..####......",".#....#.....",".#....######",".#....#..#.#","..####......","............","............","............","............","............"],
-    split:  ["............","............",".##########.",".#...#....#.",".#...#....#.",".#...#....#.",".#...#....#.",".#...#....#.",".##########.","............","............","............"],
-    plus:   ["............",".##########.",".#........#.",".#...##...#.",".#..####..#.",".#..####..#.",".#...##...#.",".#........#.",".##########.","............","............","............"],
-    lock:   ["............","....####....","...#....#...","...#....#...","..########..","..#......#..","..#..##..#..","..#..##..#..","..#......#..","..########..","............","............"],
-    theme:  ["............","............",".##########.",".#####....#.",".#####....#.",".#####....#.",".#####....#.",".#####....#.",".##########.","............","............","............"],
-    cloud:  ["............","............","....####....","..##....##..",".#........#.","#..........#","#..........#",".##########.","............","............","............","............"],
-    code:   ["............","............","...#....#...","..#......#..",".#........#.","..#......#..","...#....#...","............","............","............","............","............"],
-    disk:   ["............","............","............",".##########.",".#........#.",".#.....#..#.",".##########.","............","............","............","............","............"],
-    bolt:   ["............",".......##...","......##....",".....##.....","....######..","......##....",".....##.....","....##......","...##.......","............","............","............"],
-    close:  ["............",".##########.",".#........#.",".#.#....#.#.",".#..#..#..#.",".#...##...#.",".#..#..#..#.",".#.#....#.#.",".#........#.",".##########.","............","............"],
-    bars:   ["............","............",".........##.",".........##.",".....##..##.",".....##..##.",".##..##..##.",".##..##..##.",".##########.","............","............","............"]
-  };
-  function drawIcon(el) {
-    var rows = ICONS[el.dataset.i]; if (!rows) return;
-    var NS = "http://www.w3.org/2000/svg", svg = document.createElementNS(NS, "svg");
-    svg.setAttribute("viewBox", "0 0 12 12"); svg.setAttribute("shape-rendering", "crispEdges"); svg.setAttribute("aria-hidden", "true");
-    var cells = [];
-    rows.forEach(function (row, y) { for (var x = 0; x < 12; x++) if (row.charAt(x) === "#") cells.push([x, y]); });
-    if (el.dataset.i === "hide") for (var k = 1; k <= 10; k++) cells.push([k, k]); // la barra diagonale
-    cells.forEach(function (c) {
-      var r = document.createElementNS(NS, "rect");
-      r.setAttribute("x", c[0]); r.setAttribute("y", c[1]); r.setAttribute("width", 1); r.setAttribute("height", 1); r.setAttribute("fill", "currentColor");
-      svg.appendChild(r);
+  /* ---------- Icone: in hover si pixelano per un attimo (griglia che si affina, poi il tratto pulito) ---------- */
+  (function iconHover() {
+    var COLOR = "#ffc27a", STEPS = [5, 8, 13, 24];
+    document.querySelectorAll(".fc .ic").forEach(function (svg) {
+      var host = svg.closest(".fc"), wrap = document.createElement("span");
+      wrap.className = "icw"; svg.parentNode.insertBefore(wrap, svg); wrap.appendChild(svg);
+      if (reduce) return;
+      var image = null, ready = false, busy = false;
+      function load() {
+        if (image) return;
+        var s = '<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="96" height="96" fill="none" stroke="' + COLOR +
+                '" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">' + svg.innerHTML + "</svg>";
+        image = new Image(); image.onload = function () { ready = true; };
+        image.src = "data:image/svg+xml;charset=utf-8," + encodeURIComponent(s);
+      }
+      function play() {
+        if (busy || !ready) { load(); return; }
+        busy = true;
+        var cv = document.createElement("canvas"), size = 56; cv.width = cv.height = size; wrap.appendChild(cv);
+        var ctx = cv.getContext("2d"), i = 0; svg.style.opacity = "0";
+        (function step() {
+          if (i >= STEPS.length) { cv.remove(); svg.style.opacity = ""; busy = false; return; }
+          var n = STEPS[i++], tiny = document.createElement("canvas"); tiny.width = tiny.height = n;
+          tiny.getContext("2d").drawImage(image, 0, 0, n, n);
+          ctx.clearRect(0, 0, size, size); ctx.imageSmoothingEnabled = false; ctx.drawImage(tiny, 0, 0, size, size);
+          setTimeout(step, 70);
+        })();
+      }
+      host.addEventListener("mouseenter", play);
+      host.addEventListener("pointerdown", load);
+      load();
     });
-    el.appendChild(svg);
-  }
-  document.querySelectorAll(".pxi").forEach(drawIcon);
+  })();
 })();
