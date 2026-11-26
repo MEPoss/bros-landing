@@ -83,7 +83,8 @@
       " v=pow(clamp(v,0.,1.),3.4)*1.7;",
       " float s=v*3.;",
       " float l=(floor(s)+step(b4(gl_FragCoord.xy),fract(s)))/3.;",
-      " vec3 c=mix(vec3(.0),vec3(.62,.74,1.),l*l)+vec3(.12)*l;",
+      " vec3 hot=mix(vec3(.95,.26,.12),vec3(1.,.80,.32),l);",
+      " vec3 c=hot*l*l+vec3(.10)*l;",
       " gl_FragColor=vec4(c*.5,1.);",
       "}"
     ].join("\n");
