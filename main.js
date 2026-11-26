@@ -218,4 +218,35 @@
       load();
     });
   })();
+
+  /* ---------- Versione e DMG: letti dall'ultima release dell'app, cosi' la pagina e' sempre aggiornata ---------- */
+  (function release() {
+    var line = document.querySelector("[data-rel]");
+    function size(b, it) { var s = (b / 1048576).toFixed(1); return it ? s.replace(".", ",") : s; }
+    function apply(r) {
+      if (!r || !r.tag) return;
+      document.querySelectorAll("[data-download]").forEach(function (a) { if (r.dmg_url) a.href = r.dmg_url; });
+      document.querySelectorAll("[data-dmg]").forEach(function (c) { if (r.dmg_name) c.textContent = r.dmg_name; });
+      if (!line) return;
+      var v = r.tag.replace(/^v/, ""), d = new Date(r.published_at), parts = { it: [], en: [] };
+      var date = function (loc) { return isNaN(d) ? "" : d.toLocaleDateString(loc, { day: "numeric", month: "short", year: "numeric" }); };
+      line.innerHTML =
+        '<span lang="it">Versione ' + v + (r.dmg_size ? " · DMG " + size(r.dmg_size, true) + " MB" : "") + (date("it-IT") ? " · " + date("it-IT") : "") + "</span>" +
+        '<span lang="en">Version ' + v + (r.dmg_size ? " · DMG " + size(r.dmg_size, false) + " MB" : "") + (date("en-GB") ? " · " + date("en-GB") : "") + "</span>";
+      line.hidden = false;
+    }
+    function fallback() { fetch("release.json").then(function (x) { return x.json(); }).then(apply).catch(function () {}); }
+    var cached = null;
+    try { cached = JSON.parse(sessionStorage.getItem("bros-rel") || "null"); } catch (e) {}
+    if (cached && Date.now() - cached.at < 30 * 60 * 1000) { apply(cached.r); return; }
+    fetch("https://api.github.com/repos/MEPoss/bros/releases/latest", { headers: { Accept: "application/vnd.github+json" } })
+      .then(function (x) { if (!x.ok) throw new Error(x.status); return x.json(); })
+      .then(function (g) {
+        var a = (g.assets || []).filter(function (s) { return /\.dmg$/i.test(s.name); })[0];
+        var r = { tag: g.tag_name, published_at: g.published_at, dmg_name: a && a.name, dmg_url: a && a.browser_download_url, dmg_size: a && a.size };
+        try { sessionStorage.setItem("bros-rel", JSON.stringify({ at: Date.now(), r: r })); } catch (e) {}
+        apply(r);
+      })
+      .catch(fallback);
+  })();
 })();

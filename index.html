@@ -48,18 +48,35 @@
   "applicationCategory": "BrowserApplication",
   "operatingSystem": "macOS 14 or later",
   "processorRequirements": "Apple silicon",
-  "softwareVersion": "latest",
-  "fileSize": "14 MB",
-  "inLanguage": ["en", "it"],
+  "softwareVersion": "1.0.1",
+  "fileSize": "7.9 MB",
+  "inLanguage": [
+    "en",
+    "it"
+  ],
   "license": "https://opensource.org/license/mit",
   "isAccessibleForFree": true,
   "url": "https://www.ugopossenti.com/bros/",
   "downloadUrl": "https://github.com/MEPoss/bros/releases/latest",
   "codeRepository": "https://github.com/MEPoss/bros",
   "image": "https://www.ugopossenti.com/bros/og.png",
-  "isBasedOn": { "@type": "SoftwareApplication", "name": "Search", "url": "https://searchbrowser.app" },
-  "author": { "@type": "Person", "name": "Ugo Possenti", "url": "https://www.ugopossenti.com/" },
-  "offers": { "@type": "Offer", "price": "0", "priceCurrency": "EUR", "availability": "https://schema.org/InStock" }
+  "isBasedOn": {
+    "@type": "SoftwareApplication",
+    "name": "Search",
+    "url": "https://searchbrowser.app"
+  },
+  "author": {
+    "@type": "Person",
+    "name": "Ugo Possenti",
+    "url": "https://www.ugopossenti.com/"
+  },
+  "offers": {
+    "@type": "Offer",
+    "price": "0",
+    "priceCurrency": "EUR",
+    "availability": "https://schema.org/InStock"
+  },
+  "dateModified": "2026-11-26"
 }
 </script>
 
@@ -118,7 +135,7 @@
           <span lang="en">brOS is a Mac browser that shows your open tabs like files in a Finder window. Move them into folders, mark them, find them again.</span>
         </p>
         <div class="cta-row">
-          <a class="btn primary" href="https://github.com/MEPoss/bros/releases/latest" target="_blank" rel="noopener">
+          <a class="btn primary" data-download href="https://github.com/MEPoss/bros/releases/latest" target="_blank" rel="noopener">
             <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 3v12"/><path d="m7 11 5 5 5-5"/><path d="M5 20h14"/></svg>
             <span lang="it">Scarica per Mac</span><span lang="en">Download for Mac</span>
           </a>
@@ -130,6 +147,7 @@
           <span lang="it">Gratuito · macOS 14 o successivo · Apple silicon · circa 14 MB</span>
           <span lang="en">Free · macOS 14 or later · Apple silicon · about 14 MB</span>
         </p>
+        <p class="meta rel" data-rel hidden></p>
       </div>
 
       <div class="wrap hero-shot">
@@ -189,8 +207,8 @@
         <span class="num">02</span>
         <h3><span lang="it">Ogni link è un file</span><span lang="en">Every link is a file</span></h3>
         <p>
-          <span lang="it">Ogni link ha stato, priorità, scadenza, tag e note. Trascini i link sulle cartelle. Selezioni più link come nel Finder (clic, <kbd>⌘</kbd>, <kbd>⇧</kbd> o un rettangolo) e con “Crea cartella da selezione” li raccogli in un colpo.</span>
-          <span lang="en">Every link has a status, a priority, a due date, tags and notes. Drag links onto folders. Select several as in the Finder (click, <kbd>⌘</kbd>, <kbd>⇧</kbd> or a rubber band) and use “Create Folder from Selection” to gather them at once.</span>
+          <span lang="it">Ogni link ha stato, priorità, scadenza, tag e note. Trascini i link sulle cartelle. Selezioni più link come nel Finder (clic, <kbd>⌘</kbd>, <kbd>⇧</kbd> o un rettangolo) e con “Crea cartella da selezione” li raccogli in un colpo. Alle cartelle puoi dare un’icona (tasto destro › Icona, tra trenta), e il campo sopra l’albero cerca tra cartelle e link.</span>
+          <span lang="en">Every link has a status, a priority, a due date, tags and notes. Drag links onto folders. Select several as in the Finder (click, <kbd>⌘</kbd>, <kbd>⇧</kbd> or a rubber band) and use “Create Folder from Selection” to gather them at once. Give folders an icon (right-click › Icon, one of thirty), and the field above the tree searches folders and links.</span>
         </p>
       </div>
       <figure class="shot win f-shot">
@@ -269,7 +287,7 @@
         <div class="k"><span class="kk"><kbd>⌥</kbd><kbd>⌘</kbd><kbd>↑</kbd><kbd>↓</kbd></span><p><span lang="it">Pagina precedente o successiva. La lista gira in cerchio e funziona anche con il cursore nel campo di Google</span><span lang="en">Previous or next page. The list goes round, and it works with the caret in Google’s search field</span></p></div>
         <div class="k"><span class="kk"><kbd>⌥</kbd><kbd>⌘</kbd><kbd>←</kbd><kbd>→</kbd></span><p><span lang="it">Sezione precedente o successiva</span><span lang="en">Previous or next section</span></p></div>
         <div class="k"><span class="kk"><kbd>↑</kbd><kbd>↓</kbd><kbd>←</kbd><kbd>→</kbd></span><p><span lang="it">Dentro il Workspace: ti muovi tra sezioni e link, apri e chiudi le cartelle. Invio apre la pagina</span><span lang="en">Inside the Workspace: move through sections and links, open and close folders. Return opens the page</span></p></div>
-        <div class="k"><span class="kk"><kbd>⌫</kbd></span><p><span lang="it">Elimina i link selezionati, con conferma</span><span lang="en">Delete the selected links, with a confirmation</span></p></div>
+        <div class="k"><span class="kk"><kbd>⌘</kbd><kbd>⌫</kbd></span><p><span lang="it">Elimina i link selezionati o la cartella, con conferma. I link di una cartella eliminata vanno nella Inbox</span><span lang="en">Delete the selected links, or the folder, with a confirmation. A deleted folder’s links go to the Inbox</span></p></div>
       </div>
     </div>
   </section>
@@ -341,7 +359,7 @@
       <p class="eyebrow"><span lang="it">Installazione</span><span lang="en">Install</span></p>
       <h2><span lang="it">Tre passaggi.</span><span lang="en">Three steps.</span></h2>
       <ol class="steps reveal">
-        <li><span class="n">1</span><p><span lang="it">Scarica <code>Bros.dmg</code> e trascina l’app in Applicazioni.</span><span lang="en">Download <code>Bros.dmg</code> and drag the app into Applications.</span></p></li>
+        <li><span class="n">1</span><p><span lang="it">Scarica <code data-dmg>Bros.dmg</code> e trascina l’app in Applicazioni.</span><span lang="en">Download <code data-dmg>Bros.dmg</code> and drag the app into Applications.</span></p></li>
         <li><span class="n">2</span><p><span lang="it">La prima volta, clic con il tasto destro su Bros e scegli <strong>Apri</strong>.</span><span lang="en">The first time, right-click Bros and choose <strong>Open</strong>.</span></p></li>
         <li><span class="n">3</span><p><span lang="it">Da quel momento si apre come ogni altra app.</span><span lang="en">From then on it opens like any other app.</span></p></li>
       </ol>
@@ -350,7 +368,7 @@
         <span lang="en">brOS is not yet notarised by Apple, which is why macOS asks you to confirm the first time. It does not update itself: new versions are on the <a href="https://github.com/MEPoss/bros/releases" target="_blank" rel="noopener">Releases</a> page.</span>
       </p>
       <div class="cta-row">
-        <a class="btn primary" href="https://github.com/MEPoss/bros/releases/latest" target="_blank" rel="noopener">
+        <a class="btn primary" data-download href="https://github.com/MEPoss/bros/releases/latest" target="_blank" rel="noopener">
           <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 3v12"/><path d="m7 11 5 5 5-5"/><path d="M5 20h14"/></svg>
           <span lang="it">Scarica per Mac</span><span lang="en">Download for Mac</span>
         </a>

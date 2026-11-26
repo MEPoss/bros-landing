@@ -1,0 +1,78 @@
+name: Sync with the app
+
+# Tiene la landing allineata a MEPoss/bros:
+#  - release.json (versione, DMG, data) e il JSON-LD della pagina si aggiornano da soli;
+#  - se il README dell'app cambia (nuove funzioni), si apre una segnalazione con la differenza,
+#    così il testo della landing si aggiorna su quella base.
+# Parte ogni tre ore, a mano (Actions > Run workflow) o con un evento "app-updated"
+# (repository_dispatch) che l'app può mandare quando esce una release.
+on:
+  schedule:
+    - cron: "23 */3 * * *"
+  workflow_dispatch:
+  repository_dispatch:
+    types: [app-updated]
+
+permissions:
+  contents: write
+  issues: write
+
+concurrency:
+  group: sync-app
+  cancel-in-progress: false
+
+jobs:
+  sync:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Read the app's release and README
+        id: sync
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: python3 scripts/sync_app.py
+
+      - name: Commit what changed
+        id: commit
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add release.json index.html sync/app-README.md
+          if git diff --cached --quiet; then
+            echo "committed=false" >> "$GITHUB_OUTPUT"
+          else
+            git commit -m "Sync with the app: ${{ steps.sync.outputs.release_tag }}"
+            git push
+            echo "committed=true" >> "$GITHUB_OUTPUT"
+          fi
+
+      - name: Open or update the "app changed" issue
+        if: steps.sync.outputs.readme_changed == 'true' || steps.sync.outputs.release_changed == 'true'
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          TAG: ${{ steps.sync.outputs.release_tag }}
+        run: |
+          gh label create app-update --color ff7a1a --description "The app changed: review the landing copy" --force
+          {
+            echo "The app repo changed. The landing already has the new version and DMG link (release.json)."
+            echo
+            echo "Latest release: **$TAG** — https://github.com/MEPoss/bros/releases/tag/$TAG"
+            echo
+            if [ -f sync/readme.diff ]; then
+              echo "README changes since the last sync (check whether the landing copy needs them):"
+              echo
+              echo '```diff'
+              head -c 50000 sync/readme.diff
+              echo
+              echo '```'
+            else
+              echo "The README did not change."
+            fi
+          } > body.md
+          number=$(gh issue list --label app-update --state open --json number --jq '.[0].number // empty')
+          if [ -n "$number" ]; then
+            gh issue comment "$number" --body-file body.md
+          else
+            gh issue create --title "The app changed: review the landing copy ($TAG)" --label app-update --body-file body.md
+          fi
