@@ -301,3 +301,15 @@ h1 em { font-style: normal; }
 .fc:hover .icw { color: #ff7a1a; }
 
 .meta.rel { margin-top: 4px; }
+
+/* Dithering: bande che sfumano tra le sezioni e sopra il footer, bagliore nelle celle */
+.section { position: relative; }
+.dband { position: absolute; left: 0; right: 0; top: 0; height: 100px; pointer-events: none; z-index: 0; }
+.dband canvas, .dglow { display: block; width: 100%; height: 100%; image-rendering: pixelated; }
+.dband-end { position: relative; height: 180px; margin-top: 40px; }
+.foot { margin-top: 0; }
+.section > .wrap { position: relative; z-index: 1; }
+.fc, .k { position: relative; overflow: hidden; }
+.fc > *:not(.dglow), .k > *:not(.dglow) { position: relative; z-index: 1; }
+.dglow { position: absolute; inset: 0; z-index: 0; opacity: 0; transition: opacity .5s steps(5, end); }
+.fc:hover .dglow, .k:hover .dglow { opacity: 1; }

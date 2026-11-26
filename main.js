@@ -139,6 +139,55 @@
     })(performance.now());
   })();
 
+
+  /* ---------- Dithering: matrice di Bayer 4x4, in arancione ---------- */
+  var BAYER = [[0, 8, 2, 10], [12, 4, 14, 6], [3, 11, 1, 9], [15, 7, 13, 5]];
+  var ORANGE = [255, 122, 26];
+  function thr(x, y) { return (BAYER[y & 3][x & 3] + 0.5) / 16; }
+  // Immagine -> arancione a N livelli di luminosita', retinato
+  function ditherPixels(id, levels, done) {
+    var d = id.data, w = id.width;
+    for (var i = 0, p = 0; i < d.length; i += 4, p++) {
+      var L = Math.pow((d[i] * 0.3 + d[i + 1] * 0.59 + d[i + 2] * 0.11) / 255, 0.8) * levels;
+      var f = L - Math.floor(L), lv = Math.min(1, (Math.floor(L) + (f > thr(p % w, (p / w) | 0) ? 1 : 0)) / levels);
+      d[i] = ORANGE[0] * lv; d[i + 1] = ORANGE[1] * lv; d[i + 2] = ORANGE[2] * lv; d[i + 3] = 255;
+    }
+    done(id);
+  }
+  // Sfumatura retinata disegnata su un canvas (verso: down = sfuma dall'alto verso il basso, up = il contrario, mid = al centro)
+  function ditherGradient(cv, o) {
+    var cell = o.cell || 6, w = Math.max(1, Math.ceil(cv.clientWidth / cell)), h = Math.max(1, Math.ceil(cv.clientHeight / cell));
+    cv.width = w; cv.height = h;
+    var ctx = cv.getContext("2d"), id = ctx.createImageData(w, h), d = id.data, levels = o.levels || 3;
+    for (var y = 0; y < h; y++) {
+      var t = h > 1 ? y / (h - 1) : 1;
+      if (o.dir === "up") t = 1 - t; else if (o.dir === "mid") t = 1 - Math.abs(2 * t - 1);
+      var v = Math.pow(t, o.pow || 1.6) * levels;
+      for (var x = 0; x < w; x++) {
+        var f = v - Math.floor(v), lv = Math.min(levels, Math.floor(v) + (f > thr(x, y) ? 1 : 0)) / levels, k = (y * w + x) * 4;
+        d[k] = ORANGE[0]; d[k + 1] = ORANGE[1]; d[k + 2] = ORANGE[2]; d[k + 3] = Math.round(255 * lv * (o.alpha || 0.4));
+      }
+    }
+    ctx.putImageData(id, 0, 0);
+  }
+  var bands = document.querySelectorAll("[data-dither]");
+  function paintBands() {
+    bands.forEach(function (el) {
+      var cv = el.querySelector("canvas"); if (!cv) return;
+      ditherGradient(cv, { dir: el.dataset.dither, alpha: parseFloat(el.dataset.alpha) || 0.4, cell: parseInt(el.dataset.cell, 10) || 6, pow: parseFloat(el.dataset.pow) || 1.6 });
+    });
+  }
+  // Bagliore retinato nelle celle: compare a gradini al passaggio del mouse
+  document.querySelectorAll(".fc, .k").forEach(function (cell) {
+    var cv = document.createElement("canvas"); cv.className = "dglow"; cv.setAttribute("aria-hidden", "true");
+    cell.insertBefore(cv, cell.firstChild);
+  });
+  function paintGlows() {
+    document.querySelectorAll(".dglow").forEach(function (cv) { ditherGradient(cv, { dir: "down", alpha: 0.26, cell: 4, pow: 1.4 }); });
+  }
+  paintBands(); paintGlows();
+  var rz; addEventListener("resize", function () { clearTimeout(rz); rz = setTimeout(function () { paintBands(); paintGlows(); }, 200); });
+
   /* ---------- Screenshot reali: compaiono con un effetto pixel che si scioglie ---------- */
   function pixelReveal(img) {
     var shot = img.closest(".shot"), body = img.parentElement;
@@ -161,19 +210,22 @@
       var dw = img.naturalWidth * s, dh = img.naturalHeight * s;
       fx.drawImage(img, (full.width - dw) * px, (full.height - dh) * py, dw, dh);
 
-      var ctx = cv.getContext("2d"), steps = [36, 18, 9, 5, 0], i = 0;
+      var ctx = cv.getContext("2d"), steps = [{ c: 6, l: 1 }, { c: 4, l: 3 }, 36, 18, 9, 5, 0], i = 0;
       (function step() {
-        var cells = steps[i];
-        if (!cells) { img.classList.add("on"); cv.remove(); return; }
+        var st = steps[i];
+        if (st === 0) { img.classList.add("on"); cv.remove(); return; }
+        var cells = typeof st === "object" ? st.c : st;
         var tw = Math.max(1, Math.round(cv.width / (cells * dpr))), th = Math.max(1, Math.round(cv.height / (cells * dpr)));
         var tiny = document.createElement("canvas"); tiny.width = tw; tiny.height = th;
-        tiny.getContext("2d").drawImage(full, 0, 0, tw, th);
+        var tctx = tiny.getContext("2d");
+        tctx.drawImage(full, 0, 0, tw, th);
+        if (typeof st === "object") ditherPixels(tctx.getImageData(0, 0, tw, th), st.l, function (d) { tctx.putImageData(d, 0, 0); });
         ctx.imageSmoothingEnabled = false;
         ctx.drawImage(tiny, 0, 0, cv.width, cv.height);
-        i++; setTimeout(step, 120);
+        i++; setTimeout(step, typeof st === "object" ? 150 : 110);
       })();
     }
-    if (img.dataset.now) { run(); return; }
+    if (img.hasAttribute("data-now")) { run(); return; }
     var io = new IntersectionObserver(function (es) {
       if (es[0].isIntersecting) { io.disconnect(); run(); }
     }, { threshold: 0.25 });
