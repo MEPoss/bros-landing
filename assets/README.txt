@@ -7,7 +7,6 @@ details.png        Lista To do: stato, priorità, scadenza    [reale] (blocco 2)
 view-icons.png     Vista icone                               [reale] (blocco 3)
 view-list.png      Vista lista                               [reale] (blocco 3)
 view-snapshot.png  Vista snapshot                            [reale] (blocco 3)
-keep.png           "Tieni quando chiudi"                     [manca] (blocco 4)
 
 Gli scatti vengono da una copia di prova di brOS con dati dimostrativi (pagine pubbliche),
 non dal browser di uso quotidiano.

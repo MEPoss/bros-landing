@@ -59,7 +59,8 @@ html[data-lang="it"] [lang="en"], html[data-lang="en"] [lang="it"] { display: no
 .lang button[aria-pressed="true"] { background: var(--text); color: #000; }
 
 /* Hero */
-.hero { position: relative; overflow: hidden; padding: 96px 0 0; }
+.hero { position: relative; }
+.hero-stage { position: relative; overflow: hidden; padding: 96px 0 0; }
 #shader {
   position: absolute; inset: 0; width: 100%; height: 100%;
   image-rendering: pixelated; opacity: .9;
@@ -98,6 +99,7 @@ h1 {
 .btn:focus-visible, .nav a:focus-visible, .lang button:focus-visible, .pill:focus-visible { outline: 2px solid var(--accent); outline-offset: 2px; }
 .meta { margin: 16px 0 0; font-size: 13px; color: var(--dim); }
 .hero-shot { position: relative; margin-top: 64px; }
+.hero-shot .win-body { aspect-ratio: 2240 / 1480; }
 
 /* Finestra / screenshot */
 .shot { margin: 0; }
@@ -240,7 +242,7 @@ code { font: 13px var(--mono); background: #151518; border: 1px solid var(--line
 @media (max-width: 860px) {
   .nav-links a:not(:last-child) { display: none; }
   .nav-links { margin-left: auto; }
-  .hero { padding-top: 64px; }
+  .hero-stage { padding-top: 64px; }
   .hero-shot { margin-top: 44px; padding: 0 12px; }
   .section { padding-top: 80px; }
   .feature, .feature.flip { grid-template-columns: 1fr; gap: 28px; margin-top: 64px; }
@@ -258,6 +260,55 @@ h1 em { font-style: normal; }
   .cells { grid-template-columns: 1fr; }
   .btn { padding: 12px 18px; }
 }
+
+
+/* Hero con scroll (attivo solo con JS e senza "riduci movimento"): lo stage resta fermo,
+   la finestra sale, si raddrizza e si assesta. --e va da 0 a 1 con lo scroll. */
+.has-motion .hero { --e: 0; }
+.has-motion .hero::after { content: ""; display: block; height: 85vh; height: 85svh; }
+.has-motion .hero-stage { position: sticky; top: 56px; padding-top: 56px; }
+.has-motion .hero-in { transform: translateY(calc((1 - var(--e)) * 5vh)); }
+.has-motion .hero-shot { perspective: 1500px; }
+.has-motion .hero-shot .win { transform-origin: 50% 0; will-change: transform;
+  transform: translateY(calc((1 - var(--e)) * 150px)) rotateX(calc((1 - var(--e)) * 32deg)) scale(calc(1 + (1 - var(--e)) * .1)); }
+
+/* Sezioni "Le basi": celle attaccate, linee sottili, illustrazioni e icone pixel */
+.sec-h { margin: 80px 0 0; max-width: 760px; font-size: clamp(20px, 2.6vw, 26px); font-weight: 600; letter-spacing: -.02em; line-height: 1.2; }
+.sec-h em { display: block; font-style: normal; font-weight: 400; font-size: 16px; letter-spacing: 0; line-height: 1.5; color: var(--muted); margin-top: 8px; }
+.sec-h em a { text-decoration-color: #555; text-underline-offset: 3px; }
+.sec-h em a:hover { text-decoration-color: var(--text); }
+.tri { margin-top: 28px; display: grid; grid-template-columns: repeat(3, 1fr); gap: 1px; background: var(--line); border: 1px solid var(--line); border-radius: 12px; overflow: hidden; }
+.tri-c { margin: 0; background: var(--panel); display: flex; flex-direction: column; }
+.tri-c figcaption { padding: 20px 22px 24px; color: var(--muted); font-size: 15px; }
+.tri-c figcaption strong { color: var(--text); font-weight: 600; }
+.ill { aspect-ratio: 4 / 3; position: relative; overflow: hidden; border-bottom: 1px solid var(--line); }
+.dither { background-color: #050505; background-image: radial-gradient(rgba(255,170,90,.18) 1px, transparent 1.3px); background-size: 6px 6px; }
+.strip { position: absolute; left: 10%; right: 10%; top: 20%; display: grid; grid-template-columns: repeat(4, 1fr); gap: 6px; }
+.pt { height: 26px; background: #121214; border: 2px solid #2a2a2e; }
+.strip .hl { position: absolute; top: 0; left: 0; width: calc((100% - 18px) / 4); height: 26px; background: rgba(255,255,255,.12); border: 2px solid #d4d4d8;
+  animation: hl-x 6s steps(1, end) infinite; }
+@keyframes hl-x { 0% { left: 0; } 25% { left: calc((100% + 6px) / 4); } 50% { left: calc((100% + 6px) / 4 * 2); } 75% { left: calc((100% + 6px) / 4 * 3); } }
+.side { position: absolute; left: 0; top: 0; bottom: 0; width: 36%; padding: 28px 12px; background: #0a0a0b; border-right: 2px solid #2a2a2e; display: flex; flex-direction: column; gap: 8px; }
+.pr { height: 16px; background: #121214; border: 2px solid #2a2a2e; }
+.side .hl { position: absolute; left: 12px; right: 12px; top: 28px; height: 16px; background: rgba(255,255,255,.12); border: 2px solid #d4d4d8; animation: hl-y 6s steps(1, end) infinite; }
+@keyframes hl-y { 0% { top: 28px; } 25% { top: 52px; } 50% { top: 76px; } 75% { top: 100px; } }
+.pins { position: absolute; inset: 0; display: grid; grid-template-columns: repeat(2, 64px); gap: 10px; place-content: center; }
+.pins span { display: grid; place-items: center; height: 64px; background: #101012; border: 2px solid #2a2a2e; font: 400 30px/1 var(--pixel); color: var(--muted); animation: pinpulse 4s steps(1, end) infinite; }
+.pins span:nth-child(2) { animation-delay: 1s; } .pins span:nth-child(4) { animation-delay: 2s; } .pins span:nth-child(3) { animation-delay: 3s; }
+@keyframes pinpulse { 0% { color: #fff; border-color: #d4d4d8; background: #1c1c1f; } 25%, 100% { color: var(--muted); border-color: #2a2a2e; background: #101012; } }
+.fgrid { margin-top: 28px; display: grid; gap: 1px; background: var(--line); border: 1px solid var(--line); border-radius: 12px; overflow: hidden; }
+.fgrid-4 { grid-template-columns: repeat(4, 1fr); }
+.fc { background: var(--panel); padding: 26px 24px 30px; display: flex; flex-direction: column; gap: 18px; transition: background .2s; }
+.fc:hover { background: #0e0e10; }
+.fc p { margin: 0; font-size: 15px; line-height: 1.55; color: var(--muted); }
+.fc strong { color: var(--text); font-weight: 600; }
+.fc kbd { height: 20px; min-width: 20px; padding: 0 5px; margin: 0 1px; font-size: 11px; vertical-align: 1px; }
+.pxi { display: block; width: 28px; height: 28px; color: var(--text); transition: color .2s; }
+.pxi svg { width: 100%; height: 100%; display: block; }
+.fc:hover .pxi { color: #ffc27a; }
+@media (max-width: 1000px) { .fgrid-4 { grid-template-columns: repeat(2, 1fr); } }
+@media (max-width: 860px) { .tri { grid-template-columns: 1fr; } .sec-h { margin-top: 64px; } }
+@media (max-width: 520px) { .fgrid-4 { grid-template-columns: 1fr; } }
 
 @media (prefers-reduced-motion: reduce) {
   html { scroll-behavior: auto; }

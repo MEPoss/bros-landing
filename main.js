@@ -6,12 +6,12 @@
 
   /* ---------- Lingua ---------- */
   var TITLES = {
-    it: "brOS · Il browser che tratta le tue pagine come file",
-    en: "brOS · The browser that treats your pages like files"
+    it: "brOS · Il browser per Mac che tratta le tab come file",
+    en: "brOS · The Mac browser that treats tabs like files"
   };
   var DESCS = {
-    it: "brOS è un browser per Mac che mostra le tab aperte come file in una finestra del Finder. Fork di Search, con un Workspace per ordinare le pagine.",
-    en: "brOS is a Mac browser that shows your open tabs like files in a Finder window. A fork of Search, with a Workspace to sort your pages."
+    it: "brOS è un browser per Mac gratuito che mostra le tab aperte come file in una finestra del Finder. Fork di Search, con un Workspace: Inbox, cartelle, scadenze.",
+    en: "brOS is a free Mac browser that shows your open tabs like files in a Finder window. A fork of Search with a Workspace: Inbox, folders, due dates."
   };
   function setLang(l, save) {
     doc.dataset.lang = l; doc.lang = l;
@@ -173,6 +173,7 @@
         i++; setTimeout(step, 120);
       })();
     }
+    if (img.dataset.now) { run(); return; }
     var io = new IntersectionObserver(function (es) {
       if (es[0].isIntersecting) { io.disconnect(); run(); }
     }, { threshold: 0.25 });
@@ -183,4 +184,57 @@
     if (img.complete) ok(); else img.addEventListener("load", ok);
     // se il file manca resta il segnaposto
   });
+
+  /* ---------- Hero: la finestra sale e si raddrizza con lo scroll (come il tour di Pantry) ---------- */
+  (function heroMotion() {
+    var hero = document.getElementById("hero"), stage = hero && hero.querySelector(".hero-stage");
+    if (!hero || !stage || reduce) return;
+    doc.classList.add("has-motion");
+    var NAV = 56, queued = false;
+    function update() {
+      queued = false;
+      var range = hero.offsetHeight - stage.offsetHeight;
+      var p = range > 0 ? Math.min(1, Math.max(0, (NAV - hero.getBoundingClientRect().top) / range)) : 1;
+      hero.style.setProperty("--e", (p * p * (3 - 2 * p)).toFixed(4));
+    }
+    function queue() { if (!queued) { queued = true; requestAnimationFrame(update); } }
+    addEventListener("scroll", queue, { passive: true });
+    addEventListener("resize", queue);
+    update();
+  })();
+
+  /* ---------- Icone pixel: bitmap 12x12, disegnate come quadratini ---------- */
+  var ICONS = {
+    pin:    ["............","............",".##########.",".#........#.",".#.###....#.",".#.###....#.",".#........#.",".#........#.",".##########.","............","............","............"],
+    shield: ["............","..########..","..#......#..","..#......#..","..#......#..","..#......#..","..#......#..","...#....#...","....#..#....",".....##.....","............","............"],
+    hide:   ["............","............","...######...",".##......##.","#...####...#","#..##..##..#","#...####...#",".##......##.","...######...","............","............","............"],
+    book:   ["............","............",".####..####.",".#..#..#..#.",".#..#..#..#.",".#..#..#..#.",".#..#..#..#.",".####..####.","............","............","............","............"],
+    video:  ["............","............",".##########.",".#........#.",".#........#.",".#...####.#.",".#...#..#.#.",".#...####.#.",".##########.","............","............","............"],
+    key:    ["............","............","..####......",".#....#.....",".#....######",".#....#..#.#","..####......","............","............","............","............","............"],
+    split:  ["............","............",".##########.",".#...#....#.",".#...#....#.",".#...#....#.",".#...#....#.",".#...#....#.",".##########.","............","............","............"],
+    plus:   ["............",".##########.",".#........#.",".#...##...#.",".#..####..#.",".#..####..#.",".#...##...#.",".#........#.",".##########.","............","............","............"],
+    lock:   ["............","....####....","...#....#...","...#....#...","..########..","..#......#..","..#..##..#..","..#..##..#..","..#......#..","..########..","............","............"],
+    theme:  ["............","............",".##########.",".#####....#.",".#####....#.",".#####....#.",".#####....#.",".#####....#.",".##########.","............","............","............"],
+    cloud:  ["............","............","....####....","..##....##..",".#........#.","#..........#","#..........#",".##########.","............","............","............","............"],
+    code:   ["............","............","...#....#...","..#......#..",".#........#.","..#......#..","...#....#...","............","............","............","............","............"],
+    disk:   ["............","............","............",".##########.",".#........#.",".#.....#..#.",".##########.","............","............","............","............","............"],
+    bolt:   ["............",".......##...","......##....",".....##.....","....######..","......##....",".....##.....","....##......","...##.......","............","............","............"],
+    close:  ["............",".##########.",".#........#.",".#.#....#.#.",".#..#..#..#.",".#...##...#.",".#..#..#..#.",".#.#....#.#.",".#........#.",".##########.","............","............"],
+    bars:   ["............","............",".........##.",".........##.",".....##..##.",".....##..##.",".##..##..##.",".##..##..##.",".##########.","............","............","............"]
+  };
+  function drawIcon(el) {
+    var rows = ICONS[el.dataset.i]; if (!rows) return;
+    var NS = "http://www.w3.org/2000/svg", svg = document.createElementNS(NS, "svg");
+    svg.setAttribute("viewBox", "0 0 12 12"); svg.setAttribute("shape-rendering", "crispEdges"); svg.setAttribute("aria-hidden", "true");
+    var cells = [];
+    rows.forEach(function (row, y) { for (var x = 0; x < 12; x++) if (row.charAt(x) === "#") cells.push([x, y]); });
+    if (el.dataset.i === "hide") for (var k = 1; k <= 10; k++) cells.push([k, k]); // la barra diagonale
+    cells.forEach(function (c) {
+      var r = document.createElementNS(NS, "rect");
+      r.setAttribute("x", c[0]); r.setAttribute("y", c[1]); r.setAttribute("width", 1); r.setAttribute("height", 1); r.setAttribute("fill", "currentColor");
+      svg.appendChild(r);
+    });
+    el.appendChild(svg);
+  }
+  document.querySelectorAll(".pxi").forEach(drawIcon);
 })();

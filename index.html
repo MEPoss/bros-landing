@@ -1,13 +1,68 @@
 <!doctype html>
-<html lang="it" data-lang="it">
+<html lang="en" data-lang="en">
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>brOS · Il browser che tratta le tue pagine come file</title>
-<meta name="description" content="brOS è un browser per Mac che mostra le tab aperte come file in una finestra del Finder. Fork di Search, con un Workspace per ordinare le pagine.">
+<title>brOS · The Mac browser that treats tabs like files</title>
+<meta name="description" content="brOS is a free Mac browser that shows your open tabs like files in a Finder window. A fork of Search with a Workspace: Inbox, folders, due dates.">
+<meta name="author" content="Ugo Possenti">
+<meta name="robots" content="index, follow, max-image-preview:large">
 <meta name="color-scheme" content="dark">
 <meta name="theme-color" content="#000000">
+<link rel="canonical" href="https://www.ugopossenti.com/bros/">
+
+<!-- Open Graph -->
+<meta property="og:type" content="website">
+<meta property="og:site_name" content="brOS">
+<meta property="og:url" content="https://www.ugopossenti.com/bros/">
+<meta property="og:title" content="brOS · The Mac browser that treats tabs like files">
+<meta property="og:description" content="Your open pages, sorted like files. A Mac browser with a Workspace: Inbox, nested folders, due dates and snapshot views. A fork of Search.">
+<meta property="og:image" content="https://www.ugopossenti.com/bros/og.png">
+<meta property="og:image:type" content="image/png">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta property="og:image:alt" content="brOS: your open pages, sorted like files. The Workspace window with folders and page snapshots.">
+<meta property="og:locale" content="en_US">
+<meta property="og:locale:alternate" content="it_IT">
+
+<!-- X / Twitter -->
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="brOS · The Mac browser that treats tabs like files">
+<meta name="twitter:description" content="Your open pages, sorted like files. A Mac browser with a Workspace: Inbox, folders, due dates, snapshots. A fork of Search.">
+<meta name="twitter:image" content="https://www.ugopossenti.com/bros/og.png">
+<meta name="twitter:image:alt" content="brOS: your open pages, sorted like files. The Workspace window with folders and page snapshots.">
+
+<!-- Icons -->
 <link rel="icon" type="image/svg+xml" href="favicon.svg">
+<link rel="icon" type="image/png" sizes="256x256" href="icon-256.png">
+<link rel="apple-touch-icon" href="apple-touch-icon.png">
+
+<!-- Structured data -->
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "SoftwareApplication",
+  "name": "brOS",
+  "alternateName": "Bros",
+  "description": "A Mac browser that shows open tabs like files in a Finder window. A fork of Search with a Workspace: Inbox, nested folders, due dates, tags, notes and snapshot views.",
+  "applicationCategory": "BrowserApplication",
+  "operatingSystem": "macOS 14 or later",
+  "processorRequirements": "Apple silicon",
+  "softwareVersion": "latest",
+  "fileSize": "14 MB",
+  "inLanguage": ["en", "it"],
+  "license": "https://opensource.org/license/mit",
+  "isAccessibleForFree": true,
+  "url": "https://www.ugopossenti.com/bros/",
+  "downloadUrl": "https://github.com/MEPoss/bros/releases/latest",
+  "codeRepository": "https://github.com/MEPoss/bros",
+  "image": "https://www.ugopossenti.com/bros/og.png",
+  "isBasedOn": { "@type": "SoftwareApplication", "name": "Search", "url": "https://searchbrowser.app" },
+  "author": { "@type": "Person", "name": "Ugo Possenti", "url": "https://www.ugopossenti.com/" },
+  "offers": { "@type": "Offer", "price": "0", "priceCurrency": "EUR", "availability": "https://schema.org/InStock" }
+}
+</script>
+
 <script>
   // Lingua: scelta salvata, altrimenti quella del browser. Gira prima del rendering per evitare lampi.
   (function () {
@@ -17,6 +72,7 @@
     d.dataset.lang = l; d.lang = l; d.classList.add("js");
   })();
 </script>
+<link rel="preload" href="fonts/Geist.woff2" as="font" type="font/woff2" crossorigin>
 <link rel="stylesheet" href="style.css">
 </head>
 <body>
@@ -28,7 +84,7 @@
       <span lang="it">Portfolio</span><span lang="en">Portfolio</span>
     </a>
     <a class="logo" href="#top" aria-label="brOS">br<b>OS</b></a>
-    <nav class="nav-links" aria-label="Sezioni">
+    <nav class="nav-links" aria-label="Sections">
       <a href="#features"><span lang="it">Funzioni</span><span lang="en">Features</span></a>
       <a href="#keys"><span lang="it">Scorciatoie</span><span lang="en">Shortcuts</span></a>
       <a href="#install"><span lang="it">Installa</span><span lang="en">Install</span></a>
@@ -43,60 +99,46 @@
 
 <main id="top">
 
-  <!-- HERO -->
-  <section class="hero">
-    <canvas id="shader" aria-hidden="true"></canvas>
-    <div class="hero-fade" aria-hidden="true"></div>
-    <div class="wrap hero-in">
-      <a class="pill" href="https://searchbrowser.app" target="_blank" rel="noopener">
-        <span lang="it">Un fork di Search</span><span lang="en">A fork of Search</span>
-        <i aria-hidden="true">↗</i>
-      </a>
-      <h1>
-        <span lang="it">Le tue pagine aperte,<br>ordinate come file.</span>
-        <span lang="en">Your open pages,<br>sorted like files.</span>
-      </h1>
-      <p class="lead">
-        <span lang="it">brOS è un browser per Mac che mostra le tab aperte come file in una finestra del Finder. Le sposti in cartelle, le segni, le ritrovi.</span>
-        <span lang="en">brOS is a Mac browser that shows your open tabs like files in a Finder window. Move them into folders, mark them, find them again.</span>
-      </p>
-      <div class="cta-row">
-        <a class="btn primary" href="https://github.com/MEPoss/bros/releases/latest" target="_blank" rel="noopener">
-          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 3v12"/><path d="m7 11 5 5 5-5"/><path d="M5 20h14"/></svg>
-          <span lang="it">Scarica per Mac</span><span lang="en">Download for Mac</span>
+  <!-- HERO (l'immagine sale e si raddrizza con lo scroll) -->
+  <section class="hero" id="hero">
+    <div class="hero-stage">
+      <canvas id="shader" aria-hidden="true"></canvas>
+      <div class="hero-fade" aria-hidden="true"></div>
+      <div class="wrap hero-in">
+        <a class="pill" href="https://searchbrowser.app" target="_blank" rel="noopener">
+          <span lang="it">Un fork di Search</span><span lang="en">A fork of Search</span>
+          <i aria-hidden="true">↗</i>
         </a>
-        <a class="btn ghost" href="https://github.com/MEPoss/bros" target="_blank" rel="noopener">
-          <span lang="it">Vedi su GitHub</span><span lang="en">View on GitHub</span>
-        </a>
-      </div>
-      <p class="meta">
-        <span lang="it">Gratuito · macOS 14 o successivo · Apple silicon · circa 14 MB</span>
-        <span lang="en">Free · macOS 14 or later · Apple silicon · about 14 MB</span>
-      </p>
-    </div>
-
-    <div class="wrap hero-shot reveal">
-      <figure class="shot win">
-        <div class="win-bar"><i></i><i></i><i></i></div>
-        <div class="win-body">
-          <div class="mock mock-ws" aria-hidden="true">
-            <div class="ws-tree">
-              <div class="t sel"><b></b>Inbox<em>4</em></div>
-              <div class="t"><b></b>To do<em>2</em></div>
-              <div class="t"><b></b>Due this week<em>3</em></div>
-              <div class="t"><b class="f"></b>Progetti</div>
-              <div class="t sub"><b class="f"></b>Sito</div>
-              <div class="t"><b class="f"></b>Da leggere</div>
-            </div>
-            <div class="ws-grid">
-              <div class="tile new"></div><div class="tile"></div><div class="tile"></div>
-              <div class="tile"></div><div class="tile"></div><div class="tile"></div>
-            </div>
-          </div>
-          <img data-shot src="assets/workspace.png" alt="Il Workspace di brOS aperto con ⌘K: sezioni a sinistra, link a destra" decoding="async">
-          <span class="ph">placeholder · assets/workspace.png</span>
+        <h1>
+          <span lang="it">Le tue pagine aperte, <br>ordinate come file.</span>
+          <span lang="en">Your open pages, <br>sorted like files.</span>
+        </h1>
+        <p class="lead">
+          <span lang="it">brOS è un browser per Mac che mostra le tab aperte come file in una finestra del Finder. Le sposti in cartelle, le segni, le ritrovi.</span>
+          <span lang="en">brOS is a Mac browser that shows your open tabs like files in a Finder window. Move them into folders, mark them, find them again.</span>
+        </p>
+        <div class="cta-row">
+          <a class="btn primary" href="https://github.com/MEPoss/bros/releases/latest" target="_blank" rel="noopener">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 3v12"/><path d="m7 11 5 5 5-5"/><path d="M5 20h14"/></svg>
+            <span lang="it">Scarica per Mac</span><span lang="en">Download for Mac</span>
+          </a>
+          <a class="btn ghost" href="https://github.com/MEPoss/bros" target="_blank" rel="noopener">
+            <span lang="it">Vedi su GitHub</span><span lang="en">View on GitHub</span>
+          </a>
         </div>
-      </figure>
+        <p class="meta">
+          <span lang="it">Gratuito · macOS 14 o successivo · Apple silicon · circa 14 MB</span>
+          <span lang="en">Free · macOS 14 or later · Apple silicon · about 14 MB</span>
+        </p>
+      </div>
+
+      <div class="wrap hero-shot">
+        <figure class="shot win">
+          <div class="win-body">
+            <img data-shot data-now src="assets/workspace.png" width="2240" height="1480" alt="The brOS Workspace opened with ⌘K: sections on the left, pages as snapshots on the right" decoding="async">
+          </div>
+        </figure>
+      </div>
     </div>
   </section>
 
@@ -135,7 +177,7 @@
               <div class="tile new"></div><div class="tile"></div><div class="tile"></div>
             </div>
           </div>
-          <img data-shot src="assets/sections.png" alt="Sezioni del Workspace: Inbox, To do, Due this week e cartelle annidate" loading="lazy" decoding="async">
+          <img data-shot src="assets/sections.png" width="2240" height="904" alt="Workspace sections: Inbox, To do, Due this week and nested folders" loading="lazy" decoding="async">
           <span class="ph">placeholder · assets/sections.png</span>
         </div>
       </figure>
@@ -162,7 +204,7 @@
             <div class="r"><b></b><s></s><u class="c1"></u><u class="c2"></u><u class="c3"></u></div>
             <div class="folder-pop"></div>
           </div>
-          <img data-shot src="assets/details.png" alt="Un link con stato, priorità, scadenza, tag e note" loading="lazy" decoding="async">
+          <img data-shot src="assets/details.png" width="2240" height="904" alt="The To do section as a list, with status, priority, due date and tags" loading="lazy" decoding="async">
           <span class="ph">placeholder · assets/details.png</span>
         </div>
       </figure>
@@ -182,7 +224,7 @@
         <figure class="shot win small">
           <div class="win-body">
             <div class="mock mock-icons" aria-hidden="true"><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i></div>
-            <img data-shot src="assets/view-icons.png" alt="Vista icone" loading="lazy" decoding="async">
+            <img data-shot src="assets/view-icons.png" width="1920" height="904" alt="Icons view" loading="lazy" decoding="async">
             <span class="ph">placeholder · assets/view-icons.png</span>
           </div>
           <figcaption><span lang="it">Icone</span><span lang="en">Icons</span></figcaption>
@@ -190,7 +232,7 @@
         <figure class="shot win small">
           <div class="win-body">
             <div class="mock mock-list" aria-hidden="true"><i></i><i></i><i></i><i></i><i></i><i></i><i></i></div>
-            <img data-shot src="assets/view-list.png" alt="Vista lista" loading="lazy" decoding="async">
+            <img data-shot src="assets/view-list.png" width="1920" height="904" alt="List view" loading="lazy" decoding="async">
             <span class="ph">placeholder · assets/view-list.png</span>
           </div>
           <figcaption><span lang="it">Lista</span><span lang="en">List</span></figcaption>
@@ -198,38 +240,12 @@
         <figure class="shot win small">
           <div class="win-body">
             <div class="mock mock-snaps" aria-hidden="true"><i></i><i></i><i></i><i></i></div>
-            <img data-shot src="assets/view-snapshot.png" alt="Vista snapshot" loading="lazy" decoding="async">
+            <img data-shot src="assets/view-snapshot.png" width="1920" height="904" alt="Snapshots view" loading="lazy" decoding="async">
             <span class="ph">placeholder · assets/view-snapshot.png</span>
           </div>
           <figcaption>Snapshot</figcaption>
         </figure>
       </div>
-    </div>
-
-    <!-- 04 -->
-    <div class="wrap feature flip reveal">
-      <div class="f-text">
-        <span class="num">04</span>
-        <h3><span lang="it">Tieni quando chiudi</span><span lang="en">Keep when closed</span></h3>
-        <p>
-          <span lang="it">Di solito chiudere una tab fa sparire la pagina. Con <kbd>⌥</kbd><kbd>⌘</kbd><kbd>S</kbd> il link resta nel Workspace anche dopo. Quello che non hai tenuto né messo in una cartella se ne va con la tab.</span>
-          <span lang="en">Normally, closing a tab makes the page vanish. With <kbd>⌥</kbd><kbd>⌘</kbd><kbd>S</kbd> the link stays in the Workspace afterwards. Anything you neither kept nor filed goes away with its tab.</span>
-        </p>
-      </div>
-      <figure class="shot win f-shot">
-        <div class="win-bar"><i></i><i></i><i></i></div>
-        <div class="win-body">
-          <div class="mock mock-keep" aria-hidden="true">
-            <div class="tabs"><span class="tab keep">A<x>×</x></span><span class="tab gone">B<x>×</x></span></div>
-            <div class="ws-list">
-              <div class="lr keep"><b></b><s></s><em>⌥⌘S</em></div>
-              <div class="lr gone"><b></b><s></s></div>
-            </div>
-          </div>
-          <img data-shot src="assets/keep.png" alt="Un link tenuto nel Workspace dopo la chiusura della tab" loading="lazy" decoding="async">
-          <span class="ph">placeholder · assets/keep.png</span>
-        </div>
-      </figure>
     </div>
   </section>
 
@@ -249,7 +265,7 @@
       <div class="keys reveal">
         <div class="k"><span class="kk"><kbd>⌘</kbd><kbd>K</kbd></span><p><span lang="it">Apre il Workspace</span><span lang="en">Show the Workspace</span></p></div>
         <div class="k"><span class="kk"><kbd>⇧</kbd><kbd>⌘</kbd><kbd>O</kbd></span><p><span lang="it">Workspace nella barra laterale, al posto delle tab</span><span lang="en">Workspace in the sidebar, in place of the tab column</span></p></div>
-        <div class="k"><span class="kk"><kbd>⌥</kbd><kbd>⌘</kbd><kbd>S</kbd></span><p><span lang="it">Tieni la pagina in primo piano nel Workspace</span><span lang="en">Keep the page in front in the Workspace</span></p></div>
+        <div class="k"><span class="kk"><kbd>⌥</kbd><kbd>⌘</kbd><kbd>S</kbd></span><p><span lang="it">Tieni il link nel Workspace anche dopo aver chiuso la tab</span><span lang="en">Keep the link in the Workspace after its tab is closed</span></p></div>
         <div class="k"><span class="kk"><kbd>⌥</kbd><kbd>⌘</kbd><kbd>↑</kbd><kbd>↓</kbd></span><p><span lang="it">Pagina precedente o successiva. La lista gira in cerchio e funziona anche con il cursore nel campo di Google</span><span lang="en">Previous or next page. The list goes round, and it works with the caret in Google’s search field</span></p></div>
         <div class="k"><span class="kk"><kbd>⌥</kbd><kbd>⌘</kbd><kbd>←</kbd><kbd>→</kbd></span><p><span lang="it">Sezione precedente o successiva</span><span lang="en">Previous or next section</span></p></div>
         <div class="k"><span class="kk"><kbd>↑</kbd><kbd>↓</kbd><kbd>←</kbd><kbd>→</kbd></span><p><span lang="it">Dentro il Workspace: ti muovi tra sezioni e link, apri e chiudi le cartelle. Invio apre la pagina</span><span lang="en">Inside the Workspace: move through sections and links, open and close folders. Return opens the page</span></p></div>
@@ -258,19 +274,69 @@
     </div>
   </section>
 
-  <!-- EREDITA DA SEARCH -->
-  <section class="section">
+  <!-- SOTTO C'È SEARCH -->
+  <section id="search" class="section">
     <div class="wrap">
       <p class="eyebrow"><span lang="it">Le basi</span><span lang="en">The foundation</span></p>
       <h2>
         <span lang="it">Sotto c’è Search: piccolo, veloce, silenzioso.</span>
         <span lang="en">Underneath is Search: small, fast, quiet.</span>
       </h2>
-      <div class="cells reveal">
-        <div class="cell"><strong>~14 MB</strong><p><span lang="it">Usa WebKit, il motore che è già dentro macOS. Nessuna copia di Chromium.</span><span lang="en">Runs on WebKit, the engine already inside macOS. No second copy of Chromium.</span></p></div>
-        <div class="cell"><strong><span lang="it">Nessuna toolbar</span><span lang="en">No toolbar</span></strong><p><span lang="it">Un solo campo per indirizzi e ricerche, e la pagina.</span><span lang="en">One field for addresses and searches, and the page.</span></p></div>
-        <div class="cell"><strong><span lang="it">Ad blocker</span><span lang="en">Ad blocker</span></strong><p><span lang="it">Integrato, ferma i tracker prima che la pagina si disegni.</span><span lang="en">Built in, it stops trackers before the page draws.</span></p></div>
-        <div class="cell"><strong><span lang="it">Niente account</span><span lang="en">No account</span></strong><p><span lang="it">Nessuna telemetria. La sincronizzazione iCloud è opzionale e usa il tuo iCloud, non un server nostro.</span><span lang="en">No telemetry. iCloud sync is optional and uses your own iCloud, not a server of ours.</span></p></div>
+      <p class="sub">
+        <span lang="it">brOS tiene tutto quello che fa Search e ci aggiunge il Workspace. Questo è il resto, in breve.</span>
+        <span lang="en">brOS keeps everything Search does and adds the Workspace on top. Here is the rest, in short.</span>
+      </p>
+
+      <!-- Due modi di tenerle -->
+      <h3 class="sec-h reveal"><span lang="it">Due modi di tenerle.</span><span lang="en">Two ways to hold them.</span>
+        <em><span lang="it">Tab in alto o a lato, e un sito fissato diventa una lettera.</span><span lang="en">Tabs across the top or down the side, and a pinned site becomes a letter.</span></em></h3>
+      <div class="tri reveal">
+        <figure class="tri-c">
+          <div class="ill ill-strip dither" aria-hidden="true">
+            <div class="strip"><span class="pt"></span><span class="pt"></span><span class="pt"></span><span class="pt"></span><span class="hl"></span></div>
+          </div>
+          <figcaption><strong><span lang="it">Tab in alto.</span><span lang="en">Tab strip.</span></strong> <span lang="it">Una riga di tab sopra la pagina, con la tab scelta in evidenza.</span><span lang="en">A row of tabs above the page, with the one you picked highlighted.</span></figcaption>
+        </figure>
+        <figure class="tri-c">
+          <div class="ill ill-side dither" aria-hidden="true">
+            <div class="side"><span class="pr"></span><span class="pr"></span><span class="pr"></span><span class="pr"></span><span class="hl"></span></div>
+          </div>
+          <figcaption><strong><span lang="it">Barra laterale.</span><span lang="en">Sidebar.</span></strong> <span lang="it">Le tab in colonna a sinistra: più spazio per i titoli. ⇧⌘S passa da una disposizione all’altra.</span><span lang="en">Tabs in a column on the left: more room for titles. ⇧⌘S switches between the two.</span></figcaption>
+        </figure>
+        <figure class="tri-c">
+          <div class="ill ill-pins dither" aria-hidden="true">
+            <div class="pins"><span>S</span><span>G</span><span>W</span><span>V</span></div>
+          </div>
+          <figcaption><strong><span lang="it">Tab fissate.</span><span lang="en">Pins.</span></strong> <span lang="it">Le pagine che tieni aperte tutto il giorno si riducono a una lettera o alla loro icona.</span><span lang="en">The pages you keep open all day shrink to a letter or their icon.</span></figcaption>
+        </figure>
+      </div>
+
+      <!-- Leggero -->
+      <h3 class="sec-h reveal"><span lang="it">Così leggero che ti dimentichi di averlo.</span><span lang="en">Light enough to forget it’s there.</span>
+        <em><span lang="it">Search misura avvio e memoria contro Chrome e Safari: metodo e dati sono sul <a href="https://searchbrowser.app" target="_blank" rel="noopener">loro sito</a>.</span><span lang="en">Search measures launch and memory against Chrome and Safari: the method and data are on <a href="https://searchbrowser.app" target="_blank" rel="noopener">their site</a>.</span></em></h3>
+      <div class="fgrid fgrid-4 reveal">
+        <div class="fc"><i class="pxi" data-i="disk"></i><p><strong><span lang="it">Circa 14 MB.</span><span lang="en">About 14 MB.</span></strong> <span lang="it">Usa WebKit, il motore già dentro macOS: nessuna seconda copia di Chromium da scaricare e tenere in memoria.</span><span lang="en">It runs on WebKit, the engine already inside macOS: no second copy of Chromium to download and keep in memory.</span></p></div>
+        <div class="fc"><i class="pxi" data-i="bolt"></i><p><strong><span lang="it">Si apre subito.</span><span lang="en">Opens at once.</span></strong> <span lang="it">Le tab dell’ultima sessione tornano all’istante e non costano nulla finché non ci clicchi.</span><span lang="en">Tabs from your last session come back instantly and cost nothing until you click them.</span></p></div>
+        <div class="fc"><i class="pxi" data-i="close"></i><p><strong><span lang="it">Chiusa è chiusa.</span><span lang="en">Closed means closed.</span></strong> <span lang="it">Ogni pagina gira nel suo processo WebKit, come in Safari, e una tab chiusa sparisce davvero.</span><span lang="en">Each page runs in its own WebKit process, as in Safari, and a tab you close is really gone.</span></p></div>
+        <div class="fc"><i class="pxi" data-i="bars"></i><p><strong><span lang="it">Codice leggibile.</span><span lang="en">Code you can read.</span></strong> <span lang="it">Swift, senza dipendenze oltre quelle che Apple mette in macOS. Puoi leggerlo, compilarlo, correggerlo.</span><span lang="en">Swift, with no dependencies beyond what Apple ships in macOS. You can read it, build it, fix it.</span></p></div>
+      </div>
+
+      <!-- Il resto -->
+      <h3 class="sec-h reveal"><span lang="it">Tutto il resto, già dentro.</span><span lang="en">Everything else, already in.</span>
+        <em><span lang="it">Quello che Search fa, brOS lo fa.</span><span lang="en">What Search does, brOS does.</span></em></h3>
+      <div class="fgrid fgrid-4 reveal">
+        <div class="fc"><i class="pxi" data-i="pin"></i><p><strong><span lang="it">Tab fissate.</span><span lang="en">Pinned tabs.</span></strong> <span lang="it">Una lettera in testa alla riga, o l’icona del sito.</span><span lang="en">A letter at the head of the row, or the site’s icon.</span></p></div>
+        <div class="fc"><i class="pxi" data-i="shield"></i><p><strong><span lang="it">Pubblicità fermata prima.</span><span lang="en">Ads blocked early.</span></strong> <span lang="it">Tracker e reti pubblicitarie si fermano a livello di rete, prima che la pagina si disegni. Si spegne per sito.</span><span lang="en">Trackers and ad networks stop at the network level, before the page draws. Off per site if something breaks.</span></p></div>
+        <div class="fc"><i class="pxi" data-i="hide"></i><p><strong><span lang="it">Nascondi quello che vuoi.</span><span lang="en">Hide anything.</span></strong> <kbd>⇧</kbd><kbd>⌘</kbd><kbd>H</kbd> <span lang="it">e clicca un banner dei cookie o un overlay: sparisce e resta nascosto su quel sito.</span><span lang="en">then click a cookie banner or an overlay: it goes, and stays hidden on that site.</span></p></div>
+        <div class="fc"><i class="pxi" data-i="book"></i><p><strong><span lang="it">Modalità lettura.</span><span lang="en">Reading mode.</span></strong> <kbd>⇧</kbd><kbd>⌘</kbd><kbd>R</kbd> <span lang="it">riduce la pagina all’articolo.</span><span lang="en">strips a page down to the article.</span></p></div>
+        <div class="fc"><i class="pxi" data-i="video"></i><p><strong><span lang="it">Video che ti segue.</span><span lang="en">Floating video.</span></strong> <kbd>⇧</kbd><kbd>⌘</kbd><kbd>P</kbd> <span lang="it">porta il video in una piccola finestra sopra tutto, anche sopra altre app.</span><span lang="en">lifts the video into a small window above everything, other apps included.</span></p></div>
+        <div class="fc"><i class="pxi" data-i="key"></i><p><strong><span lang="it">Password nel portachiavi.</span><span lang="en">Passwords in your keychain.</span></strong> <span lang="it">Le offre sotto il campo, senza compilare niente da sole. Importi da Chrome, Arc, Dia, Brave o Edge.</span><span lang="en">Offered under the field, never filled on its own. Import from Chrome, Arc, Dia, Brave or Edge.</span></p></div>
+        <div class="fc"><i class="pxi" data-i="split"></i><p><strong><span lang="it">Due pagine affiancate.</span><span lang="en">Split view.</span></strong> <span lang="it">Trascini una tab su una pagina e le trovi una accanto all’altra.</span><span lang="en">Drag a tab onto a page and have the two side by side.</span></p></div>
+        <div class="fc"><i class="pxi" data-i="plus"></i><p><strong><span lang="it">Estensioni di Chrome.</span><span lang="en">Chrome extensions.</span></strong> <span lang="it">Dal Chrome Web Store con un link, su macOS 15.4 o successivo.</span><span lang="en">From the Chrome Web Store with a link, on macOS 15.4 or later.</span></p></div>
+        <div class="fc"><i class="pxi" data-i="lock"></i><p><strong><span lang="it">Tab private.</span><span lang="en">Private tabs.</span></strong> <kbd>⇧</kbd><kbd>⌘</kbd><kbd>N</kbd> <span lang="it">Cookie propri e nessuna traccia alla chiusura.</span><span lang="en">Their own cookies, and nothing left behind when closed.</span></p></div>
+        <div class="fc"><i class="pxi" data-i="theme"></i><p><strong><span lang="it">Chiaro, scuro o del Mac.</span><span lang="en">Light, dark or the Mac’s.</span></strong> <span lang="it">La cornice e le pagine seguono.</span><span lang="en">The frame and the pages follow.</span></p></div>
+        <div class="fc"><i class="pxi" data-i="cloud"></i><p><strong><span lang="it">Sincronizzazione iCloud.</span><span lang="en">iCloud sync.</span></strong> <span lang="it">Opzionale: tab, preferiti e impostazioni nel tuo iCloud, cifrati end to end. Nessun server nostro.</span><span lang="en">Optional: tabs, bookmarks and settings in your own iCloud, end to end encrypted. No server of ours.</span></p></div>
+        <div class="fc"><i class="pxi" data-i="code"></i><p><strong><span lang="it">Open source.</span><span lang="en">Open source.</span></strong> <span lang="it">Il codice è su GitHub, con licenza MIT: leggilo, compilalo o mandaci una correzione.</span><span lang="en">The code is on GitHub, MIT licensed: read it, build it, or send a fix.</span></p></div>
       </div>
     </div>
   </section>
