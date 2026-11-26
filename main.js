@@ -82,10 +82,10 @@
       " v+=exp(-d*3.2)*.38;",
       " v=pow(clamp(v,0.,1.),3.4)*1.7;",
       " float s=v*3.;",
-      " float l=(floor(s)+step(b4(gl_FragCoord.xy),fract(s)))/3.;",
-      " vec3 hot=mix(vec3(.92,.13,.09),vec3(.86),smoothstep(.45,1.,l));",
-      " vec3 c=hot*l*l+vec3(.10)*l;",
-      " gl_FragColor=vec4(c*.5,1.);",
+      " float l=min((floor(s)+step(b4(gl_FragCoord.xy),fract(s)))/3.,1.);",
+      " vec3 hot=mix(vec3(.92,.16,.0),vec3(1.,.48,.06),smoothstep(.35,1.,l));",
+      " vec3 c=hot*l*l+vec3(.05)*l;",
+      " gl_FragColor=vec4(c*1.0,1.);",
       "}"
     ].join("\n");
 
@@ -104,7 +104,7 @@
     gl.vertexAttribPointer(loc, 2, gl.FLOAT, false, 0, 0);
     var uR = gl.getUniformLocation(pr, "r"), uT = gl.getUniformLocation(pr, "t"), uM = gl.getUniformLocation(pr, "m");
 
-    var CELL = window.innerWidth < 700 ? 4 : 5; // dimensione del "pixel" in px CSS
+    var CELL = window.innerWidth < 700 ? 5 : 8; // dimensione del "pixel" in px CSS
     var mx = 0.25, my = 0.15, tx = mx, ty = my; // puntatore, in unità di altezza
     function size() {
       var w = Math.max(1, Math.ceil(cv.clientWidth / CELL)), h = Math.max(1, Math.ceil(cv.clientHeight / CELL));
@@ -187,7 +187,7 @@
 
   /* ---------- Icone: in hover si pixelano per un attimo (griglia che si affina, poi il tratto pulito) ---------- */
   (function iconHover() {
-    var COLOR = "#ff6b5e", STEPS = [4, 5, 6, 8, 10, 13, 17, 24], FRAME = 90; // circa 0,7 s in tutto
+    var COLOR = "#ff7a1a", STEPS = [4, 5, 6, 8, 10, 13, 17, 24], FRAME = 90; // circa 0,7 s in tutto
     document.querySelectorAll(".fc .ic").forEach(function (svg) {
       var host = svg.closest(".fc"), wrap = document.createElement("span");
       wrap.className = "icw"; svg.parentNode.insertBefore(wrap, svg); wrap.appendChild(svg);

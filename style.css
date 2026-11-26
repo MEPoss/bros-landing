@@ -13,7 +13,7 @@
   --text: #ededed;
   --muted: #a1a1a6;
   --dim: #6e6e73;
-  --accent: #d4d4d8;
+  --accent: #ff7a1a;
   --font: "Geist", -apple-system, BlinkMacSystemFont, "SF Pro Text", "Helvetica Neue", system-ui, sans-serif;
   --mono: "Geist Mono", ui-monospace, "SF Mono", Menlo, monospace;
   --pixel: "Geist Pixel", "Geist Mono", ui-monospace, monospace;
@@ -26,6 +26,7 @@ body {
   font: 16px/1.6 var(--font); -webkit-font-smoothing: antialiased;
 }
 a { color: inherit; }
+::selection { background: #ff7a1a; color: #000; }
 img { max-width: 100%; display: block; }
 
 /* Lingua: mostra solo quella attiva */
@@ -78,7 +79,7 @@ html[data-lang="it"] [lang="en"], html[data-lang="en"] [lang="it"] { display: no
   border: 1px solid var(--line-2); background: rgba(10,10,10,.7);
   transition: color .15s, border-color .15s;
 }
-.pill:hover { color: var(--text); border-color: #444; }
+.pill:hover { color: var(--text); border-color: var(--accent); }
 .pill i { font-style: normal; color: var(--dim); }
 h1 {
   margin: 28px 0 0; font-weight: 650; letter-spacing: -.045em; line-height: 1.02;
@@ -104,7 +105,7 @@ h1 {
 /* Finestra / screenshot */
 .shot { margin: 0; }
 .win { border: 1px solid var(--line-2); border-radius: 12px; background: var(--panel); overflow: hidden; position: relative;
-  box-shadow: 0 0 0 1px rgba(255,255,255,.02), 0 30px 80px -20px rgba(0,0,0,.9), 0 0 100px -30px rgba(255,70,60,.22); }
+  box-shadow: 0 0 0 1px rgba(255,255,255,.02), 0 30px 80px -20px rgba(0,0,0,.9), 0 0 100px -30px rgba(255,122,26,.22); }
 .win-bar { height: 34px; display: flex; align-items: center; gap: 7px; padding: 0 14px; border-bottom: 1px solid var(--line); background: #0d0d0e; }
 .win-bar i { width: 10px; height: 10px; border-radius: 50%; background: #2a2a2e; }
 .win-body { position: relative; aspect-ratio: 16 / 10; background: #0b0b0c; overflow: hidden; }
@@ -297,4 +298,4 @@ h1 em { font-style: normal; }
 .icw { position: relative; display: block; width: 28px; height: 28px; color: var(--text); transition: color .2s; }
 .ic { display: block; width: 28px; height: 28px; fill: none; stroke: currentColor; stroke-width: 1.5; stroke-linecap: round; stroke-linejoin: round; }
 .icw canvas { position: absolute; inset: 0; width: 100%; height: 100%; image-rendering: pixelated; pointer-events: none; }
-.fc:hover .icw { color: #ff6b5e; }
+.fc:hover .icw { color: #ff7a1a; }
