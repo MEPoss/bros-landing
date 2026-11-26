@@ -83,7 +83,7 @@
       " v=pow(clamp(v,0.,1.),3.4)*1.7;",
       " float s=v*3.;",
       " float l=(floor(s)+step(b4(gl_FragCoord.xy),fract(s)))/3.;",
-      " vec3 hot=mix(vec3(.95,.26,.12),vec3(1.,.80,.32),l);",
+      " vec3 hot=mix(vec3(.92,.13,.09),vec3(.86),smoothstep(.45,1.,l));",
       " vec3 c=hot*l*l+vec3(.10)*l;",
       " gl_FragColor=vec4(c*.5,1.);",
       "}"
@@ -187,7 +187,7 @@
 
   /* ---------- Icone: in hover si pixelano per un attimo (griglia che si affina, poi il tratto pulito) ---------- */
   (function iconHover() {
-    var COLOR = "#ffc27a", STEPS = [4, 5, 6, 8, 10, 13, 17, 24], FRAME = 140; // circa 1,1 s in tutto
+    var COLOR = "#ff6b5e", STEPS = [4, 5, 6, 8, 10, 13, 17, 24], FRAME = 140; // circa 1,1 s in tutto
     document.querySelectorAll(".fc .ic").forEach(function (svg) {
       var host = svg.closest(".fc"), wrap = document.createElement("span");
       wrap.className = "icw"; svg.parentNode.insertBefore(wrap, svg); wrap.appendChild(svg);
