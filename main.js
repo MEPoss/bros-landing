@@ -343,29 +343,57 @@
     ctx = cv.getContext("2d"); img = ctx.createImageData(cols, rows);
     w.style.visibility = "hidden";
     g.classList.add("live");
-    draw(reduce ? 2 : phase((performance.now() - t0) / 1000));
+    var t1 = (performance.now() - t0) / 1000; draw(reduce ? 2 : phase(t1), reduce ? 0 : t1);
   }
-  // 0 = tutto spento, 1 = tutto acceso; oltre 1 resta acceso
+  // Ogni ciclo è diverso: durate, direzione dello sweep e nervosismo cambiano a caso.
+  var cyc = null;
+  function newCycle(start) {
+    var r = Math.random;
+    var ap = 0.5 + r() * 0.9, hold = 0.8 + r() * 3.2, va = 0.4 + r() * 0.9, gap = r() * 0.5;
+    cyc = { s: start, ap: ap, hold: hold, va: va, e: start + ap + hold + va + gap, dir: Math.floor(r() * 5), vdir: Math.floor(r() * 5), nerv: 0.3 + r() * 0.7 };
+  }
   function phase(t) {
-    var T = t % 9;
-    if (T < 2.4) return T / 2.4 * 1.3;          // compare
-    if (T < 6.2) return 2;                       // fermo
-    if (T < 8.6) return 1.3 - (T - 6.2) / 2.4 * 1.3; // si dissolve
+    if (!cyc || t >= cyc.e) newCycle(t);
+    var u = t - cyc.s;
+    if (u < cyc.ap) return u / cyc.ap * 1.3;
+    if (u < cyc.ap + cyc.hold) return 2;
+    if (u < cyc.ap + cyc.hold + cyc.va) return 1.3 - (u - cyc.ap - cyc.hold) / cyc.va * 1.3;
     return 0;
   }
-  function draw(p) {
-    var d = img.data;
-    for (var y = 0; y < rows; y++) for (var x = 0; x < cols; x++) {
-      var i = (y * cols + x) * 4, on = mask[i + 3] > 110;
-      var thr = (B[(y & 3) * 4 + (x & 3)] + 0.5) / 16;
-      var v = (x / cols) * 0.7 + thr * 0.3;
-      if (on && p >= 1.3 || on && p > v) { d[i] = 26; d[i + 1] = 11; d[i + 2] = 0; d[i + 3] = 255; } else d[i + 3] = 0;
+  function pos(dir, x, y) {
+    return dir === 0 ? x / cols : dir === 1 ? 1 - x / cols : dir === 2 ? y / rows : dir === 3 ? 1 - y / rows : rnd(x * 1.3 + y * 7.1);
+  }
+  function rnd(n) { var s = Math.sin(n * 127.1 + 311.7) * 43758.5453; return s - Math.floor(s); }
+  function draw(p, t) {
+    var d = img.data, f = Math.floor(t * 18), trans = p < 1.3;
+    // fasce che scivolano di lato: più frequenti e forti durante le transizioni, a raffiche quando è fermo
+    var nv = cyc ? cyc.nerv : 0.6, burst = rnd(Math.floor(t * (4 + nv * 6)) + 0.5) > (trans ? 0.35 - nv * 0.25 : 0.9 - nv * 0.45);
+    var nb = burst ? (trans ? 6 : 4) : 0, bands = [];
+    for (var k = 0; k < nb; k++) {
+      var by = Math.floor(rnd(f * 3.1 + k) * rows), bh = 1 + Math.floor(rnd(f * 5.7 + k) * rows * 0.16);
+      bands.push([by, by + bh, Math.round((rnd(f * 9.3 + k) - 0.5) * cols * (trans ? 0.16 : 0.1)), rnd(f * 2.9 + k) > 0.55]);
+    }
+    var jit = trans ? 0.22 : 0;
+    for (var y = 0; y < rows; y++) {
+      var off = 0, ghost = false;
+      for (var q = 0; q < bands.length; q++) if (y >= bands[q][0] && y < bands[q][1]) { off = bands[q][2]; ghost = bands[q][3]; }
+      for (var x = 0; x < cols; x++) {
+        var i = (y * cols + x) * 4, sx = x - off, on = sx >= 0 && sx < cols && mask[(y * cols + sx) * 4 + 3] > 110;
+        var thr = (B[(y & 3) * 4 + (sx & 3 & 3)] + 0.5) / 16;
+        var dr = cyc ? (p > 1.3 || (cyc && (t - cyc.s) < cyc.ap) ? cyc.dir : cyc.vdir) : 0;
+        var v = pos(dr, sx, y) * 0.7 + thr * 0.3 + (rnd(f + sx * 0.37 + y * 1.91) - 0.5) * jit;
+        var lit = on && (p >= 1.3 || p > v);
+        if (lit && !trans && rnd(f * 1.7 + sx * 0.13 + y * 0.71) > 0.992) lit = false; // pixel che saltano
+        if (lit) { if (ghost) { d[i] = 255; d[i + 1] = 235; d[i + 2] = 200; } else { d[i] = 26; d[i + 1] = 11; d[i + 2] = 0; } d[i + 3] = 255; }
+        else if (!trans && on === false && rnd(f * 2.3 + x * 0.41 + y * 0.29) > 0.9985) { d[i] = 26; d[i + 1] = 11; d[i + 2] = 0; d[i + 3] = 255; } // pixel spuri
+        else d[i + 3] = 0;
+      }
     }
     ctx.putImageData(img, 0, 0);
   }
   function loop(now) {
     raf = 0; if (!visible) return;
-    draw(phase((now - t0) / 1000));
+    var tt = (now - t0) / 1000; draw(phase(tt), tt);
     raf = requestAnimationFrame(loop);
   }
   function start() { if (!reduce && !raf && visible) { t0 = t0 || performance.now(); raf = requestAnimationFrame(loop); } }
