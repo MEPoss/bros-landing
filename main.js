@@ -165,7 +165,7 @@
       var v = Math.pow(t, o.pow || 1.6) * levels;
       for (var x = 0; x < w; x++) {
         var f = v - Math.floor(v), lv = Math.min(levels, Math.floor(v) + (f > thr(x, y) ? 1 : 0)) / levels, k = (y * w + x) * 4;
-        d[k] = ORANGE[0]; d[k + 1] = ORANGE[1]; d[k + 2] = ORANGE[2]; d[k + 3] = Math.round(255 * lv * (o.alpha || 0.4));
+        var col = o.color || ORANGE; d[k] = col[0]; d[k + 1] = col[1]; d[k + 2] = col[2]; d[k + 3] = Math.round(255 * lv * (o.alpha || 0.4));
       }
     }
     ctx.putImageData(id, 0, 0);
@@ -185,8 +185,11 @@
   function paintGlows() {
     document.querySelectorAll(".dglow").forEach(function (cv) { ditherGradient(cv, { dir: "down", alpha: 0.26, cell: 2, pow: 1.4 }); });
   }
-  paintBands(); paintGlows();
-  var rz; addEventListener("resize", function () { clearTimeout(rz); rz = setTimeout(function () { paintBands(); paintGlows(); }, 200); });
+  // Footer: i puntini più scuri continuano sotto la banda e svaniscono (alpha basso: il testo scuro resta leggibile)
+  var fd = document.querySelector(".foot-dither");
+  function paintFoot() { if (fd) ditherGradient(fd, { dir: "mid", alpha: 0.6, cell: 4, pow: 1.1, color: [224, 84, 6] }); }
+  paintBands(); paintGlows(); paintFoot();
+  var rz; addEventListener("resize", function () { clearTimeout(rz); rz = setTimeout(function () { paintBands(); paintGlows(); paintFoot(); }, 200); });
 
   /* ---------- Screenshot reali: compaiono con un effetto pixel che si scioglie ---------- */
   function pixelReveal(img) {
@@ -313,4 +316,61 @@
   }
   fit(); addEventListener("resize", fit);
   if (document.fonts && document.fonts.ready) document.fonts.ready.then(fit);
+})();
+
+/* Scritta del footer: dissolvenza dither/pixel in loop (a cella, soglia di Bayer che avanza da sinistra) */
+(function () {
+  var g = document.querySelector(".giant"), w = g && g.querySelector(".gw"); if (!w) return;
+  var reduce = window.matchMedia && matchMedia("(prefers-reduced-motion: reduce)").matches;
+  var cv = document.createElement("canvas"); cv.className = "giant-cv"; cv.setAttribute("aria-hidden", "true");
+  g.appendChild(cv);
+  var B = [0, 8, 2, 10, 12, 4, 14, 6, 3, 11, 1, 9, 15, 7, 13, 5];
+  var cols, rows, mask, img, ctx, mctx, W, visible = true, raf = 0, t0 = 0;
+  function build() {
+    var fs = parseFloat(g.style.fontSize) || 100, cell = Math.max(3, Math.round(fs / 56));
+    var cssW = Math.ceil(w.getBoundingClientRect().width), cssH = Math.ceil(fs * 0.78);
+    cols = Math.ceil(cssW / cell); rows = Math.ceil(cssH / cell); W = cols;
+    cv.style.width = cols * cell + "px"; cv.style.height = rows * cell + "px";
+    cv.width = cols; cv.height = rows;
+    var m = document.createElement("canvas"); m.width = cols; m.height = rows;
+    mctx = m.getContext("2d");
+    mctx.clearRect(0, 0, cols, rows);
+    mctx.font = '400 ' + (fs / cell) + 'px "Geist Pixel", "Geist Mono", monospace';
+    mctx.textBaseline = "alphabetic"; mctx.fillStyle = "#000";
+    var met = mctx.measureText("b");
+    mctx.fillText("brOS", 0, 0.04 * fs / cell + (met.actualBoundingBoxAscent || fs / cell * 0.75));
+    mask = mctx.getImageData(0, 0, cols, rows).data;
+    ctx = cv.getContext("2d"); img = ctx.createImageData(cols, rows);
+    w.style.visibility = "hidden";
+    g.classList.add("live");
+    draw(reduce ? 2 : phase((performance.now() - t0) / 1000));
+  }
+  // 0 = tutto spento, 1 = tutto acceso; oltre 1 resta acceso
+  function phase(t) {
+    var T = t % 9;
+    if (T < 2.4) return T / 2.4 * 1.3;          // compare
+    if (T < 6.2) return 2;                       // fermo
+    if (T < 8.6) return 1.3 - (T - 6.2) / 2.4 * 1.3; // si dissolve
+    return 0;
+  }
+  function draw(p) {
+    var d = img.data;
+    for (var y = 0; y < rows; y++) for (var x = 0; x < cols; x++) {
+      var i = (y * cols + x) * 4, on = mask[i + 3] > 110;
+      var thr = (B[(y & 3) * 4 + (x & 3)] + 0.5) / 16;
+      var v = (x / cols) * 0.7 + thr * 0.3;
+      if (on && p >= 1.3 || on && p > v) { d[i] = 26; d[i + 1] = 11; d[i + 2] = 0; d[i + 3] = 255; } else d[i + 3] = 0;
+    }
+    ctx.putImageData(img, 0, 0);
+  }
+  function loop(now) {
+    raf = 0; if (!visible) return;
+    draw(phase((now - t0) / 1000));
+    raf = requestAnimationFrame(loop);
+  }
+  function start() { if (!reduce && !raf && visible) { t0 = t0 || performance.now(); raf = requestAnimationFrame(loop); } }
+  function rebuild() { setTimeout(function () { build(); }, 0); }
+  if (document.fonts && document.fonts.ready) document.fonts.ready.then(function () { setTimeout(function () { build(); start(); }, 50); });
+  addEventListener("resize", function () { clearTimeout(rebuild.t); rebuild.t = setTimeout(function () { w.style.visibility = ""; build(); }, 250); });
+  if ("IntersectionObserver" in window) new IntersectionObserver(function (es) { visible = es[0].isIntersecting; if (visible) { t0 = performance.now(); start(); } }).observe(g);
 })();

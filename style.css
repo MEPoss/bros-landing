@@ -318,9 +318,15 @@ h1 em { font-style: normal; }
 .dglow { position: absolute; inset: 0; z-index: 0; opacity: 0; transition: opacity .5s steps(5, end); }
 .fc:hover .dglow, .k:hover .dglow { opacity: 1; }
 
-/* Scritta gigante a tutta larghezza nel footer: "br" in Geist, "OS" in Geist Pixel */
+/* Scritta gigante a tutta larghezza nel footer: stesso font del logo in navbar (Geist Pixel) */
 .foot { padding-bottom: 0; overflow: hidden; }
 .giant { margin: 140px auto 0; max-width: var(--wrap); padding: 0 20px; line-height: 1; white-space: nowrap; user-select: none; height: .78em; overflow: hidden; font-size: 30vw; }
-.gw { display: inline-flex; align-items: baseline; gap: .04em; color: #1a0b00; line-height: 1; }
-.gw b { font-family: "Geist", system-ui, sans-serif; font-weight: 800; letter-spacing: -.05em; }
-.gw u { text-decoration: none; font-family: "Geist Pixel", "Geist Mono", monospace; font-weight: 400; -webkit-text-stroke: .02em #1a0b00; }
+.gw { display: inline-block; font-family: var(--pixel); font-weight: 400; color: #1a0b00; line-height: 1; letter-spacing: 0; }
+.gw b, .gw u { font: inherit; text-decoration: none; }
+
+.foot { position: relative; }
+.foot-dither { position: absolute; inset: 0; width: 100%; height: 100%; image-rendering: pixelated; pointer-events: none; z-index: 0; }
+.foot-in, .giant { position: relative; z-index: 1; }
+
+.giant { position: relative; }
+.giant-cv { position: absolute; left: 20px; top: 0; image-rendering: pixelated; pointer-events: none; }
