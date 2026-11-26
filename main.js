@@ -174,7 +174,7 @@
   function paintBands() {
     bands.forEach(function (el) {
       var cv = el.querySelector("canvas"); if (!cv) return;
-      ditherGradient(cv, { dir: el.dataset.dither, alpha: parseFloat(el.dataset.alpha) || 0.4, cell: parseInt(el.dataset.cell, 10) || 6, pow: parseFloat(el.dataset.pow) || 1.6 });
+      ditherGradient(cv, { dir: el.dataset.dither, alpha: parseFloat(el.dataset.alpha) || 0.4, cell: parseInt(el.dataset.cell, 10) || 3, pow: parseFloat(el.dataset.pow) || 1.6 });
     });
   }
   // Bagliore retinato nelle celle: compare a gradini al passaggio del mouse
@@ -183,7 +183,7 @@
     cell.insertBefore(cv, cell.firstChild);
   });
   function paintGlows() {
-    document.querySelectorAll(".dglow").forEach(function (cv) { ditherGradient(cv, { dir: "down", alpha: 0.26, cell: 4, pow: 1.4 }); });
+    document.querySelectorAll(".dglow").forEach(function (cv) { ditherGradient(cv, { dir: "down", alpha: 0.26, cell: 2, pow: 1.4 }); });
   }
   paintBands(); paintGlows();
   var rz; addEventListener("resize", function () { clearTimeout(rz); rz = setTimeout(function () { paintBands(); paintGlows(); }, 200); });
@@ -210,7 +210,7 @@
       var dw = img.naturalWidth * s, dh = img.naturalHeight * s;
       fx.drawImage(img, (full.width - dw) * px, (full.height - dh) * py, dw, dh);
 
-      var ctx = cv.getContext("2d"), steps = [{ c: 6, l: 1 }, { c: 4, l: 3 }, 36, 18, 9, 5, 0], i = 0;
+      var ctx = cv.getContext("2d"), steps = [{ c: 3, l: 1 }, { c: 2, l: 3 }, 36, 18, 9, 5, 0], i = 0;
       (function step() {
         var st = steps[i];
         if (st === 0) { img.classList.add("on"); cv.remove(); return; }
