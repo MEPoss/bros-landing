@@ -1,10 +1,10 @@
 {
-  "tag": "v1.0.1",
-  "name": "Bros 1.0.1",
-  "published_at": "2026-11-26T10:03:50Z",
-  "html_url": "https://github.com/MEPoss/bros/releases/tag/v1.0.1",
+  "tag": "v1.0.5",
+  "name": "Bros 1.0.5",
+  "published_at": "2026-11-26T17:07:41Z",
+  "html_url": "https://github.com/MEPoss/bros/releases/tag/v1.0.5",
   "dmg_name": "Bros.dmg",
-  "dmg_url": "https://github.com/MEPoss/bros/releases/download/v1.0.1/Bros.dmg",
-  "dmg_size": 8268891,
-  "notes": "Folder icons (right-click a folder › Icon), a search field above the Workspace tree, ⌘⌫ to delete links or folders with a confirmation (the bare Delete key no longer does), and ⌥⌘↑/↓ that go round the list. Ad-hoc signed, not notarised: right-click Bros in Applications and choose Open the first time. macOS 14 or later, Apple silicon."
+  "dmg_url": "https://github.com/MEPoss/bros/releases/download/v1.0.5/Bros.dmg",
+  "dmg_size": 8154984,
+  "notes": "Disk image with a selectable read-me for the first launch (the unblock command can be copied)."
 }
