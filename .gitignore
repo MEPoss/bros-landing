@@ -1,2 +1,5 @@
 sync/readme.diff
 .DS_Store
+.vercel
+.env*
+public/

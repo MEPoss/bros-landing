@@ -1,0 +1,7 @@
+{
+  "$schema": "https://openapi.vercel.sh/vercel.json",
+  "framework": null,
+  "buildCommand": "mkdir -p public && cp -R index.html style.css main.js release.json og.png icon-256.png apple-touch-icon.png favicon.svg fonts assets public/",
+  "outputDirectory": "public",
+  "cleanUrls": false
+}
