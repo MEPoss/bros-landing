@@ -187,7 +187,7 @@
 
   /* ---------- Icone: in hover si pixelano per un attimo (griglia che si affina, poi il tratto pulito) ---------- */
   (function iconHover() {
-    var COLOR = "#ffc27a", STEPS = [5, 8, 13, 24];
+    var COLOR = "#ffc27a", STEPS = [4, 5, 6, 8, 10, 13, 17, 24], FRAME = 140; // circa 1,1 s in tutto
     document.querySelectorAll(".fc .ic").forEach(function (svg) {
       var host = svg.closest(".fc"), wrap = document.createElement("span");
       wrap.className = "icw"; svg.parentNode.insertBefore(wrap, svg); wrap.appendChild(svg);
@@ -210,7 +210,7 @@
           var n = STEPS[i++], tiny = document.createElement("canvas"); tiny.width = tiny.height = n;
           tiny.getContext("2d").drawImage(image, 0, 0, n, n);
           ctx.clearRect(0, 0, size, size); ctx.imageSmoothingEnabled = false; ctx.drawImage(tiny, 0, 0, size, size);
-          setTimeout(step, 70);
+          setTimeout(step, FRAME);
         })();
       }
       host.addEventListener("mouseenter", play);
