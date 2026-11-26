@@ -10,7 +10,7 @@ macOS 14 or later · Mac only · [Download the latest `Bros.dmg`](../../releases
 
 ---
 
-## What Bros adds
+## What Bros adds (old)
 
 ### The Workspace
 
@@ -215,3 +215,5 @@ Issues and pull requests are genuinely welcome — see [CONTRIBUTING.md](CONTRIB
 ### License
 
 MIT — see [LICENSE](LICENSE). Do what you want with the code. "Search" and the app icon are Office Commun's; please rename a fork before distributing it under another name.
+
+TEST LINE (to simulate a README change)
