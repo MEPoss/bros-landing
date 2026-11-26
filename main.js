@@ -104,7 +104,7 @@
     gl.vertexAttribPointer(loc, 2, gl.FLOAT, false, 0, 0);
     var uR = gl.getUniformLocation(pr, "r"), uT = gl.getUniformLocation(pr, "t"), uM = gl.getUniformLocation(pr, "m");
 
-    var CELL = window.innerWidth < 700 ? 5 : 8; // dimensione del "pixel" in px CSS
+    var CELL = window.innerWidth < 700 ? 3 : 4; // dimensione del "pixel" in px CSS
     var mx = 0.25, my = 0.15, tx = mx, ty = my; // puntatore, in unità di altezza
     function size() {
       var w = Math.max(1, Math.ceil(cv.clientWidth / CELL)), h = Math.max(1, Math.ceil(cv.clientHeight / CELL));
