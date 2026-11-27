@@ -1,10 +1,10 @@
 {
-  "tag": "v1.0.5",
-  "name": "Bros 1.0.5",
-  "published_at": "2026-11-26T17:07:41Z",
-  "html_url": "https://github.com/MEPoss/bros/releases/tag/v1.0.5",
+  "tag": "v1.0.6",
+  "name": "Bros 1.0.6",
+  "published_at": "2026-11-26T23:37:34Z",
+  "html_url": "https://github.com/MEPoss/bros/releases/tag/v1.0.6",
   "dmg_name": "Bros.dmg",
-  "dmg_url": "https://github.com/MEPoss/bros/releases/download/v1.0.5/Bros.dmg",
-  "dmg_size": 8154984,
-  "notes": "Disk image with a selectable read-me for the first launch (the unblock command can be copied)."
+  "dmg_url": "https://github.com/MEPoss/bros/releases/download/v1.0.6/Bros.dmg",
+  "dmg_size": 8155685,
+  "notes": "Bros shows its own What's New; no more Search cards, email sign-up or iPhone offer."
 }
